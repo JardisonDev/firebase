@@ -1,15 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:inspector_ro/core/theme/app_colors.dart';
 import 'package:inspector_ro/service/auth_service.dart';
 import 'package:flutter/material.dart';
 
-AuthService authService = AuthService();
-
 class MenuDrawer extends StatelessWidget {
-  const MenuDrawer({super.key});
+  MenuDrawer({super.key});
+
+  final AuthService authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+
     return Container(
-      decoration: BoxDecoration(color: Color(0xfff5f5f9)),
+      decoration: BoxDecoration(color: AppColors.gray1),
       child: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16),
@@ -20,7 +24,7 @@ class MenuDrawer extends StatelessWidget {
                   text: 'Menu',
                   style: TextStyle(
                     fontFamily: 'Lufga',
-                    color: Color(0xff212121),
+                    color: AppColors.gray1,
                     fontSize: 18,
                   ),
                   children: [
@@ -28,7 +32,7 @@ class MenuDrawer extends StatelessWidget {
                       text: 'Operacional',
                       style: TextStyle(
                         fontFamily: 'Lufga',
-                        color: Color(0xffd1655b),
+                        color: AppColors.primary,
                         fontSize: 18,
                       ),
                     ),
@@ -42,17 +46,17 @@ class MenuDrawer extends StatelessWidget {
               SizedBox(height: 16),
               Row(
                 children: [
-                  Icon(Icons.person, color: AppColors.gray5, size: 24),
+                  Icon(Icons.person, color: AppColors.primary, size: 24),
                   SizedBox(width: 10),
                   Title(
                     color: Colors.amberAccent,
                     child: Text(
-                      'Dados usuario',
+                      user?.email ?? 'Usuario  não logado',
                       style: TextStyle(
                         fontSize: 15,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        color: AppColors.gray5,
+                        color: AppColors.gray1,
                       ),
                     ),
                   ),
@@ -78,7 +82,7 @@ class MenuDrawer extends StatelessWidget {
                     child: Text(
                       'Sair',
                       style: TextStyle(
-                        color: AppColors.secondary,
+                        color: AppColors.primary,
                         fontWeight: FontWeight.w900,
                       ),
                     ),

@@ -65,10 +65,12 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - image/Disponivel.png
-    - image/Emperacao.png
-    - image/Manutentuin.png
-    - image/Logo.png
+    - image/forklift.png
+    - image/user-blue.png
+    - image/forklift-manutention-blue.png
+
+
+
 
     
 

@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inspector_ro/core/theme/app_colors.dart';
 //import 'package:inspector_ro/pages/criar_conta.dart';
-//import 'package:inspector_ro/pages/management.dart';
+import 'package:inspector_ro/pages/management.dart';
 import 'package:inspector_ro/pages/redefinirSenha.dart';
 import 'package:inspector_ro/service/auth_service.dart';
 import 'package:inspector_ro/widgets/snacbar.dart';
@@ -20,62 +22,27 @@ class _LoginPageState extends State<LoginPage> {
 
   AuthService authService = AuthService();
 
-  // //Verifica se o usuario ja fez Login
-  // Future _verificarUsuarioLogado() async {
-  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //Verifica se o usuario ja fez Login
+  Future _verificarUsuarioLogado() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
 
-  //   User? usuarioLogado = auth.currentUser;
+    User? usuarioLogado = auth.currentUser;
 
-  //   if (usuarioLogado != null) {
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (_) => const ManagementScreen()),
-  //     );
-  //   }
-  // }
+    if (usuarioLogado != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const ManagementScreen()),
+      );
+    }
+  }
 
-  // // Logar usuario
-  // void _loginUsuario() async {
-  //   final email = _controllerEmail.text;
-  //   final senha = _controllerSenha.text;
-
-  //   // Lógica do objeto usuário (opcional se você já tem as variáveis acima)
-  //   Usuario usuario = Usuario();
-  //   usuario.email = email;
-  //   usuario.senha = senha;
-
-  //   if (_formKey.currentState!.validate()) {
-  //     FirebaseAuth auth = FirebaseAuth.instance;
-
-  //     try {
-  //       // 1. Tenta fazer o login
-  //       await auth.signInWithEmailAndPassword(email: email, password: senha);
-
-  //       // 2. Se deu certo, navega para a próxima tela
-  //       if (!mounted) return; // Boa prática: checa se a tela ainda existe
-  //       Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(builder: (_) => const ManagementScreen()),
-  //       );
-  //     } catch (e) {
-  //       // 3. Se deu QUALQUER erro, ele cai aqui
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(
-  //           content: Text('Erro ao fazer login. Verifique e-mail e senha.'),
-  //           backgroundColor: Colors.red,
-  //         ),
-  //       );
-  //     }
-  //   }
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     _verificarUsuarioLogado();
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _verificarUsuarioLogado();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(16),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -100,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                           //color: Color(0xffd1655b),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            color: Color(0xffd1655b),
+                            color: AppColors.primary,
                           ),
                         ),
                         Padding(
@@ -111,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                             //color: Color(0xffd1655b),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: Color(0xfffdece6),
+                              color: AppColors.primary2,
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(16),
@@ -150,6 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Image.asset(
+                          'image/Logo-Forklift-black_Prancheta 1.png',
+                          height: 70,
+                        ),
                         Text(
                           'Fork',
                           style: TextStyle(
@@ -166,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                           'Lift',
                           style: TextStyle(
                             fontFamily: 'Lufga',
-                            color: Color(0xffd1655b),
+                            color: AppColors.primary,
                             fontSize: 45,
                             //fontWeight: FontWeight.w700,
                             height: 1,
@@ -180,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         color: Color(0xff323232),
                         fontSize: 12,
-                        fontWeight: FontWeight.w100,
+                        fontWeight: FontWeight.w400,
                         //fontFamily:
                       ),
                     ),
@@ -215,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         isDense: true,
-                        prefixIcon: Icon(Icons.email, color: Color(0xffd1655b)),
+                        prefixIcon: Icon(Icons.email, color: AppColors.primary),
                         filled: true,
                         fillColor: const Color(0xfff9fafb),
                         // 1. Configuração da borda quando o campo está parado
@@ -286,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         prefixIcon: Icon(
                           Icons.password_rounded,
-                          color: Color(0xffd1655b),
+                          color: AppColors.primary,
                         ),
                         filled: true,
                         fillColor: const Color(0xfff9fafb),
@@ -347,7 +318,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           'Esqueci minha senha',
                           style: TextStyle(
-                            color: Color(0xffd1655b),
+                            color: AppColors.gray0,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
@@ -355,26 +326,36 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Lógica de login aqui
-                        _botaoEnviarClicado();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xffd1655b),
-                        fixedSize: const Size(230, 40),
 
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        gradient: LinearGradient(
+                          colors: [AppColors.primary, AppColors.primary1],
                         ),
                       ),
-                      child: Text(
-                        'Entrar',
-                        style: TextStyle(
-                          fontFamily: 'roboto',
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Lógica de login aqui
+                          _botaoEnviarClicado();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(230, 40),
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          'Entrar',
+                          style: TextStyle(
+                            fontFamily: 'roboto',
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),

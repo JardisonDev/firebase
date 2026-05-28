@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:inspector_ro/components/menuDrawer.dart';
 import 'package:inspector_ro/core/theme/app_colors.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:inspector_ro/repositories/forklift.dart';
+import 'package:inspector_ro/models/forklift_model.dart';
+import 'package:inspector_ro/pages/checklist.dart';
 
 class ListForklift extends StatefulWidget {
   const ListForklift({super.key});
@@ -13,42 +13,87 @@ class ListForklift extends StatefulWidget {
 }
 
 class _ListForkliftState extends State<ListForklift> {
-  List<Forklift> listForklift = [];
+  List<ForkliftModel> listForklift = [];
+
+  bool isLoading = true;
+  double progress = 0;
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  final TextEditingController _controllersearch = TextEditingController();
-  String? _selectedStatus;
-  String _emailLogado = '';
-
-  // Recuperar Usuario logado.
-  Future _recuperarUsuario() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? userLogado = auth.currentUser;
-    if (userLogado != null) {
-      setState(() {
-        _emailLogado = userLogado.email ?? 'E-mail não encontrado';
-      });
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    _recuperarUsuario();
-    _queryCollection();
+
+    startLoading();
+    queryFarebase();
   }
 
+  // LOADING ANIMADO
+  void startLoading() {
+    Future.doWhile(() async {
+      await Future.delayed(const Duration(milliseconds: 80));
+
+      if (progress < 0.9) {
+        setState(() {
+          progress += 0.02;
+        });
+        return true;
+      }
+
+      return false;
+    });
+  }
+
+  // BUSCAR FIREBASE
+  queryFarebase() async {
+    try {
+      List<ForkliftModel> temp = [];
+
+      QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
+          .collection('empilhadeiras')
+          .get();
+
+      for (var doc in snapshot.docs) {
+        try {
+          temp.add(ForkliftModel.fromMap(doc.data()));
+        } catch (e) {
+          debugPrint('Erro ao converter documento: $e');
+        }
+      }
+
+      // COMPLETA O PROGRESSO
+      setState(() {
+        listForklift = temp;
+        progress = 1;
+      });
+
+      // ESPERA UM POUCO PRA MOSTRAR 100%
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      setState(() {
+        isLoading = false;
+      });
+    } on Exception catch (e, s) {
+      debugPrint(e.toString());
+      debugPrint(s.toString());
+    }
+  }
+
+  // TELA
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.gray1,
       drawer: Drawer(child: MenuDrawer()),
+
       appBar: AppBar(
+        backgroundColor: AppColors.gray1,
         title: RichText(
           text: TextSpan(
-            text: 'Listas',
-            style: TextStyle(
+            text: 'Lista',
+            style: const TextStyle(
               fontFamily: 'Lufga',
-              color: Color(0xff212121),
+              color: AppColors.primaryText,
               fontSize: 25,
             ),
             children: [
@@ -56,7 +101,7 @@ class _ListForkliftState extends State<ListForklift> {
                 text: 'Empilhadeiras',
                 style: TextStyle(
                   fontFamily: 'Lufga',
-                  color: Color(0xffd1655b),
+                  color: AppColors.primary,
                   fontSize: 25,
                 ),
               ),
@@ -64,447 +109,388 @@ class _ListForkliftState extends State<ListForklift> {
           ),
         ),
       ),
+
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
+
           child: Column(
             children: [
-              Stack(
-                children: [
-                  // Camada de fundo (efeito de borda lateral/detalhe)
-                  Container(
-                    width: double.infinity,
-                    height: 85,
-                    decoration: BoxDecoration(
-                      color: AppColors
-                          .primary, // Substitua pela sua cor orangePeel
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  // Camada frontal (Card principal)
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 6,
-                    ), // Cria o recuo para expor o fundo
-                    child: Material(
-                      elevation: 1,
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white, // Substitua pelo seu secondaryText
-                      child: Container(
-                        width: double.infinity,
-                        height: 85,
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: AppColors.primary,
-                            width: 0.5,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Barra indicadora
-                                  Container(
-                                    width: 40,
-                                    height: 3,
-                                    margin: const EdgeInsets.only(bottom: 4),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.primary,
-                                      borderRadius: BorderRadius.circular(2),
-                                    ),
-                                  ),
-                                  const Text(
-                                    'Operador identificado',
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: AppColors.primary,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    _emailLogado,
-                                    style: const TextStyle(
-                                      fontFamily: 'Inter',
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const Text(
-                                    'Bem-vindo ao seu turno!',
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      fontSize: 11,
-                                      color: AppColors.gray5,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Icon(
-                              Icons
-                                  .engineering, // Alternativa ao FontAwesome hardHat
-                              color: AppColors.orangePeel,
-                              size: 35,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              // Area de busca
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    // Campo de Busca
-                    Expanded(
-                      child: SizedBox(
-                        height: 40,
-                        child: TextFormField(
-                          controller: _controllersearch,
-                          onChanged: (value) {
-                            // Lógica de busca ou debounce aqui
-                            setState(() {});
-                          },
-                          decoration: InputDecoration(
-                            hintText: 'Prefixo',
-                            hintStyle: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w300,
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xFFF1F4F8), // Ex: gray1
-                            prefixIcon: const Icon(
-                              Icons.search_rounded,
-                              size: 24,
-                            ),
-                            suffixIcon: _controllersearch.text.isNotEmpty
-                                ? IconButton(
-                                    icon: const Icon(Icons.clear, size: 20),
-                                    onPressed: () {
-                                      _controllersearch.clear();
-                                      setState(() {});
-                                    },
-                                  )
-                                : null,
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 0,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide.none,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
-                                color: Colors.orange,
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+              // =========================
+              // LOADING
+              // =========================
+              if (isLoading)
+                buildLoading()
+              // =========================
+              // LISTA
+              // =========================
+              else
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: listForklift.length,
 
-                    const SizedBox(width: 8),
+                    itemBuilder: (BuildContext context, int index) {
+                      ForkliftModel forklift = listForklift[index];
 
-                    // DropDown de Opções
-                    Container(
-                      height: 40,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                          width: 1,
-                        ),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: _selectedStatus,
-                          hint: const Text(
-                            "Opções",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                          icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                          items: ['Disponivel', 'Em Operação', 'Manutenção']
-                              .map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              })
-                              .toList(),
-                          onChanged: (val) {
-                            setState(() {
-                              _selectedStatus = val;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
 
-                    // Botão de Limpar Filtro (Condicional)
-                    if (_selectedStatus != null)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 6),
                         child: GestureDetector(
+                          // NAVEGAÇÃO AQUI
                           onTap: () {
-                            setState(() {
-                              _selectedStatus = null;
-                            });
-                          },
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.orange,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.filter_alt_off,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-
-              Expanded(
-                child: GestureDetector(
-                  // Navegar para checklist
-                  child: (listForklift.isEmpty)
-                      ? const Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.forklift,
-                                size: 50,
-                                color: AppColors.orangePeel,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ChecklistForklift(empilhadeira: forklift),
                               ),
-                              Text('Nenhuma Empilhadeira encontrada'),
-                            ],
-                          ),
-                        )
-                      : SizedBox(
-                          child: ListView(
-                            children: List.generate(listForklift.length, (
-                              index,
-                            ) {
-                              Forklift model = listForklift[index];
-                              return SizedBox(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 12),
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        width: double.infinity,
-                                        height: 90,
-                                        decoration: BoxDecoration(
-                                          color: AppColors
-                                              .primary, // Substitua pela sua cor orangePeel
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                        ),
+                            );
+                          },
+
+                          child: SizedBox(
+                            width: double.infinity,
+
+                            height: 110,
+                            child: Stack(
+                              children: [
+                                // CARD
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 1,
+                                    bottom: 1,
+                                    right: 1,
+                                    top: 1,
+                                  ),
+
+                                  child: Container(
+                                    width: double.infinity,
+
+                                    height: 140,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: AppColors.primary,
+                                        width:
+                                            1, // A espessura da linha (ajuste conforme precisar)
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 6),
-                                        child: Material(
-                                          elevation: 1,
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                          color: AppColors
-                                              .gray1, // Substitua pelo seu secondaryText
-                                          child: Container(
-                                            width: double.infinity,
-                                            height: 90,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 12,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: AppColors.primary,
-                                                width: 0.5,
-                                              ),
-                                            ),
-                                            child: Row(
+                                      color: AppColors.primary2,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+
                                               children: [
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      // Frota.
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          text: 'FROTA: ',
+                                                // DADOS
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+
+                                                        children: [
+                                                          // PREFIXO
+                                                          Row(
+                                                            children: [
+                                                              const SizedBox(
+                                                                width: 6,
+                                                              ),
+
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+
+                                                                children: [
+                                                                  Text(
+                                                                    'Prefixo:',
+                                                                    style: TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: AppColors
+                                                                          .gray5,
+                                                                    ),
+                                                                  ),
+
+                                                                  Text(
+                                                                    forklift
+                                                                        .prefixo
+                                                                        .toString(),
+
+                                                                    style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: AppColors
+                                                                          .primaryText,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 12,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                            child:
+                                                                VerticalDivider(),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            width: 12,
+                                                          ),
+                                                          // FROTA
+                                                          Row(
+                                                            children: [
+                                                              const SizedBox(
+                                                                width: 6,
+                                                              ),
+
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+
+                                                                children: [
+                                                                  Text(
+                                                                    'Frota:',
+                                                                    style: TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: AppColors
+                                                                          .gray5,
+                                                                    ),
+                                                                  ),
+
+                                                                  Text(
+                                                                    forklift
+                                                                        .frota
+                                                                        .toString(),
+
+                                                                    style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: AppColors
+                                                                          .primaryText,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+
+                                                const SizedBox(width: 12),
+                                                // KM
+                                                Row(
+                                                  children: [
+                                                    const SizedBox(width: 6),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+
+                                                      children: [
+                                                        Text(
+                                                          'Horimetro:',
                                                           style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto ',
+                                                            fontSize: 12,
                                                             color:
-                                                                AppColors.gray0,
+                                                                AppColors.gray5,
+                                                          ),
+                                                        ),
+
+                                                        Text(
+                                                          forklift.km
+                                                              .toString(),
+
+                                                          style: TextStyle(
                                                             fontSize: 16,
                                                             fontWeight:
-                                                                FontWeight.w600,
-                                                          ),
-                                                          children: [
-                                                            TextSpan(
-                                                              text: model.frota
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                fontFamily:
-                                                                    'Roboto',
-                                                                color: AppColors
-                                                                    .gray0,
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      // Prefixo.
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          text: 'prefixo: ',
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                'Inter ',
+                                                                FontWeight.bold,
                                                             color: AppColors
                                                                 .primaryText,
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal,
-                                                          ),
-                                                          children: [
-                                                            TextSpan(
-                                                              text: model
-                                                                  .prefixo
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                fontFamily:
-                                                                    'Inter',
-                                                                color: AppColors
-                                                                    .primaryText,
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      // Estado Operacional
-                                                      Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        width: double.infinity,
-                                                        height: 24,
-                                                        decoration: BoxDecoration(
-                                                          color: switch (model
-                                                              .estadoOperacional) {
-                                                            'Disponível' =>
-                                                              AppColors
-                                                                  .disponivel,
-                                                            'Manutenção' =>
-                                                              AppColors
-                                                                  .manutencao,
-                                                            'Em operação' =>
-                                                              AppColors
-                                                                  .emOperacao,
-                                                            null =>
-                                                              Colors
-                                                                  .grey, // Trata se o campo estiver nulo no Firebase
-                                                            _ =>
-                                                              Colors
-                                                                  .black, // Trata qualquer outro texto que não mapeamos
-                                                          },
-
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                12,
-                                                              ),
-                                                        ),
-                                                        child: Text(
-                                                          model.estadoOperacional ==
-                                                                  'Disponível'
-                                                              ? 'Disponível'
-                                                              : model.estadoOperacional ==
-                                                                    'Manutenção'
-                                                              ? 'Manutenção'
-                                                              : 'Em operação',
-                                                          style: TextStyle(
-                                                            color: AppColors
-                                                                .secondaryText,
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontFamily:
-                                                                'Roboto',
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                const Icon(
-                                                  Icons
-                                                      .engineering, // Alternativa ao FontAwesome hardHat
-                                                  color: AppColors.orangePeel,
-                                                  size: 35,
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        ),
+                                          //SizedBox(height: 12),
+                                          // STATUS - IMAGENS
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              // STATUS
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      if (forklift
+                                                              .estadoOperacional ==
+                                                          'Disponível')
+                                                        Icon(
+                                                          Icons
+                                                              .play_arrow_rounded,
+                                                          size: 18,
+                                                          color: AppColors
+                                                              .disponivel,
+                                                        ),
+
+                                                      if (forklift
+                                                              .estadoOperacional ==
+                                                          'Manutenção')
+                                                        Icon(
+                                                          Icons.build_rounded,
+                                                          size: 14,
+                                                          color: AppColors
+                                                              .manutencao,
+                                                        ),
+
+                                                      if (forklift
+                                                              .estadoOperacional ==
+                                                          'Em operação')
+                                                        Icon(
+                                                          Icons.check_rounded,
+                                                          size: 18,
+                                                          color: AppColors
+                                                              .emOperacao,
+                                                        ),
+
+                                                      const SizedBox(width: 4),
+                                                      // EM OPERAÇÃO
+                                                      if (forklift
+                                                              .estadoOperacional ==
+                                                          'Em operação')
+                                                        Text(
+                                                          forklift
+                                                              .estadoOperacional
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                                fontSize: 13,
+                                                                fontFamily:
+                                                                    'Inter',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: AppColors
+                                                                    .emOperacao,
+                                                              ),
+                                                        ),
+                                                      // EM MANUTENÇÃO
+                                                      if (forklift
+                                                              .estadoOperacional ==
+                                                          'Manutenção')
+                                                        Text(
+                                                          forklift
+                                                              .estadoOperacional
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                                fontSize: 13,
+                                                                fontFamily:
+                                                                    'Inter',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: AppColors
+                                                                    .manutencao,
+                                                              ),
+                                                        ),
+
+                                                      // DISPONIVEL
+                                                      if (forklift
+                                                              .estadoOperacional ==
+                                                          'Disponível')
+                                                        Text(
+                                                          forklift
+                                                              .estadoOperacional
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                                fontSize: 13,
+                                                                fontFamily:
+                                                                    'Inter',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: AppColors
+                                                                    .disponivel,
+                                                              ),
+                                                        ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+
+                                              if (forklift.estadoOperacional ==
+                                                  'Disponível')
+                                                Expanded(
+                                                  child: Image.asset(
+                                                    'image/forklift.png',
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
+                                              if (forklift.estadoOperacional ==
+                                                  'Manutenção')
+                                                Expanded(
+                                                  child: Image.asset(
+                                                    'image/forklift-manutention-blue.png',
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
+                                              if (forklift.estadoOperacional ==
+                                                  'Em operação')
+                                                Expanded(
+                                                  child: Image.asset(
+                                                    'image/user-blue.png',
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              );
-                              // ListTile(
-                              //   leading: const Icon(Icons.forklift),
-                              //   title: Text(model.prefixo.toString()),
-                              //   subtitle: Text(
-                              //     model.km.toString() + model.frota.toString(),
-                              //   ),
-                              // );
-                            }),
+                              ],
+                            ),
                           ),
                         ),
-
-                  onTap: () {},
+                      );
+                    },
+                  ),
                 ),
-              ),
             ],
           ),
         ),
@@ -512,20 +498,74 @@ class _ListForkliftState extends State<ListForklift> {
     );
   }
 
-  // Pegar dados do Firebase.
-  _queryCollection() async {
-    List<Forklift> temp = [];
+  // =========================
+  // WIDGET LOADING
+  // =========================
+  Widget buildLoading() {
+    return Expanded(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
 
-    QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
-        .collection('empilhadeiras')
-        .get();
+          children: [
+            Image.asset('image/forklift.png', width: 140),
 
-    for (var doc in snapshot.docs) {
-      print(doc.data());
-      temp.add(Forklift.fromMap(doc.data()));
-    }
-    setState(() {
-      listForklift = temp;
-    });
+            const SizedBox(height: 20),
+
+            RichText(
+              text: TextSpan(
+                text: 'Fork',
+                style: const TextStyle(
+                  fontSize: 45,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontFamily: 'Lufga',
+                ),
+                children: [
+                  TextSpan(
+                    text: 'Lift',
+                    style: TextStyle(
+                      fontSize: 45,
+                      fontFamily: 'Lufga',
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            const Text(
+              'Preparando sistema...',
+              style: TextStyle(color: Colors.grey),
+            ),
+
+            const SizedBox(height: 30),
+
+            SizedBox(
+              width: 220,
+
+              child: LinearProgressIndicator(
+                color: AppColors.primary,
+                value: progress,
+                minHeight: 8,
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            Text(
+              '${(progress * 100).toInt()}%',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryText,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

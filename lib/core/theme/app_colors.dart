@@ -1,32 +1,21 @@
 import 'package:flutter/material.dart';
 
-/// Classe centralizadora de cores do projeto.
-/// Use AppColors.nomeDaCor para acessar em qualquer lugar.
 class AppColors {
   AppColors._(); // Impede a criação de instâncias AppColors()
 
   // --- BRAND COLORS (Identidade Visual) ---
-  static const Color primary = Color(0xFFC4603F); // Laranja Principal
-  static const Color orangePeel = Color(0xffd1655b);
-  static const Color secondary = Color(
-    0xFFFFFFFF,
-  ); // Bege clarinho (Fundo de botões/cards)
-  static const Color tertiary = Color(0xFFEE8B60); // Laranja Vibrante
-  static const Color alternate = Color(
-    0xFF94A3B8,
-  ); // Azul acinzentado (Secundário/Desativado)
+  static const Color primary = Color(0xFF5682A9);
+  static const Color primary1 = Color(0xFFA9C6E4);
+  static const Color primary2 = Color(0xFFE6F0F6);
+  static const Color secudary = Color(0xFFE5C369);
+  static const Color superficie = Color(0xff3a3f46);
 
   // --- TYPOGRAPHY & BACKGROUND (Textos e Fundos) ---
   static const Color primaryText = Color(0xFF323232); // Texto Escuro (Títulos)
-  static const Color secondaryText = Color(
-    0xFFFFFFFF,
-  ); // Texto Branco (Sobre fundos escuros)
-  static const Color primaryBackground = Color(
-    0xFF1B1B1B,
-  ); // Fundo Principal (Dark Mode)
-  static const Color secondaryBackground = Color(
-    0xFF1C262B,
-  ); // Fundo de Cards/Seções
+  static const Color secondaryText = Color(0xFFFFFFFF);
+  static const Color primaryBackground = Color(0xFF101418);
+  static const Color primaryBackgroundLinghet = Color(0xFF1a1c1e);
+  static const Color secudaryBackground = Color(0xFFffffff);
 
   // --- ESCALA DE CINZAS (Novas cores da imagem) ---
   static const Color gray6 = Color(0xFF464656); // Cinza mais escuro da escala
@@ -38,10 +27,8 @@ class AppColors {
   static const Color gray0 = Color(0xFF27292D); // Cinza "quase preto"
 
   // --- SEMANTIC COLORS (Status e Avisos) ---
-  static const Color success = Color(0xFF249689); // Sucesso / Positivo
+
   static const Color error = Color(0xFFFF5963); // Erro / Perigo
-  static const Color warning = Color(0xFFF9D02B); // Alerta / Atenção
-  static const Color active = Color(0xFF4CAF50); // Online / Ativo
   static const Color manutencao = Color(0xFFB59410); // Em Manutenção
   static const Color emOperacao = Color(0xFF007a8d); // Em Operação
   static const Color disponivel = Color(0xFF5d823a); // Em Operação

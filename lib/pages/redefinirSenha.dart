@@ -76,7 +76,7 @@ class _redefinirSenhaState extends State<redefinirSenha> {
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: AppColors.secondary,
+                                  color: AppColors.primaryText,
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(16),
