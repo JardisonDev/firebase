@@ -8,7 +8,7 @@ class ChecklistItemsData {
 
         titulo: 'Freios',
 
-        descricao: 'Funcionamento e eficiência',
+        descricao: 'Funcionamentos e eficiência',
       ),
 
       ChecklistItemModel(
