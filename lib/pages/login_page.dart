@@ -117,10 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          'image/Logo-Forklift-black_Prancheta 1.png',
-                          height: 70,
-                        ),
+                        // Image.asset(
+                        //   'image/Logo-Forklift-black_Prancheta 1.png',
+                        //   //height: 70,
+                        // ),
                         Text(
                           'Fork',
                           style: TextStyle(
