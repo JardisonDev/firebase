@@ -46,348 +46,348 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      backgroundColor: Color(0xfff5f5f9),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Form(
-                key: _formKey,
+      backgroundColor: AppColors.primaryBackground,
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: size.height,
+          width: size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Stack(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      //crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
+                        // LOGO
+                        Image.asset(
+                          'image/Logo-Forklift2_Prancheta 1.png',
                           height: 100,
-                          width: double.infinity,
-                          //color: Color(0xffd1655b),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: AppColors.primary,
-                          ),
+                          width: 100,
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 6),
-                          child: Container(
-                            height: 100,
-                            width: double.infinity,
-                            //color: Color(0xffd1655b),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: AppColors.primary2,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Bem-vindo!',
-                                    style: TextStyle(
-                                      fontFamily: 'roboto',
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xff323232),
-                                      height: 1,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Acesse sua conta para continuar.',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      //fontFamily: 'Inter',
-                                      fontWeight: FontWeight.normal,
-                                      color: Color(0xff323232),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                        Text(
+                          'LYNK',
+                          style: TextStyle(
+                            fontFamily: 'Lufga',
+                            fontSize: 70,
+                            color: AppColors.secudary,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
-                    //Logo
+                    SizedBox(height: 40),
+                    // CIRCULO
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Image.asset(
-                        //   'image/Logo-Forklift-black_Prancheta 1.png',
-                        //   //height: 70,
-                        // ),
-                        Text(
-                          'Fork',
-                          style: TextStyle(
-                            fontFamily: 'Lufga',
-
-                            color: Color(0xff323232),
-                            fontSize: 45,
-                            //fontWeight: FontWeight.bold,
-                            height: 1,
-                            //fontFamily:
+                        Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.secudary,
                           ),
                         ),
-                        Text(
-                          'Lift',
-                          style: TextStyle(
-                            fontFamily: 'Lufga',
-                            color: AppColors.primary,
-                            fontSize: 45,
-                            //fontWeight: FontWeight.w700,
-                            height: 1,
-                            //fontFamily:
+                        SizedBox(width: 12),
+                        Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.secudary,
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.secudary,
                           ),
                         ),
                       ],
                     ),
+                    SizedBox(height: 20),
                     Text(
-                      'Preencha os dados para continuar',
+                      'Sistema de checklist para gestão \ne operação de empilhadeiras',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xff323232),
-                        fontSize: 12,
+                        color: AppColors.secudary,
                         fontWeight: FontWeight.w400,
-                        //fontFamily:
                       ),
                     ),
                     SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'E-mail',
-                        style: TextStyle(
-                          color: Color(0xff323232),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 3),
-                    // Campo E-mail
-                    TextFormField(
-                      controller: _controllerEmail,
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return 'Campo obrigatório';
-                        }
-                        if (value.length < 6) {
-                          return 'O e-mail deve conter mais de 6 caracteres';
-                        }
-                        if (!value.contains('@')) {
-                          return 'E-mail inválido';
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        prefixIcon: Icon(Icons.email, color: AppColors.primary),
-                        filled: true,
-                        fillColor: const Color(0xfff9fafb),
-                        // 1. Configuração da borda quando o campo está parado
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xff9090a0),
-                            width: 0.1, // Ajustado de 0.1 para 1
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            12,
-                          ), // Ajustado de 8 para 12
-                        ),
-                        // 2. Configuração da borda quando o usuário clica (foco)
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(
-                              0xffd1655b,
-                            ), // Você pode trocar por outra cor se quiser destaque
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        // Borda padrão de fallback
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        hintText: 'Digite seu e-mail',
-                        hintStyle: const TextStyle(
-                          //fontFamily: 'Inter',
-                          color: Color(0xff626273),
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Senha',
-                        style: TextStyle(
-                          color: Color(0xff323232),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    // Campo Senha
-                    TextFormField(
-                      controller: _controllerSenha,
-                      keyboardType: TextInputType.number,
-                      obscureText: _seePasword == false ? true : false,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                        isDense: true,
-                        suffixIcon: GestureDetector(
-                          child: Icon(
-                            _seePasword == false
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          onTap: () {
-                            setState(() {
-                              _seePasword = !_seePasword;
-                            });
-                          },
-                        ),
-
-                        prefixIcon: Icon(
-                          Icons.password_rounded,
-                          color: AppColors.primary,
-                        ),
-                        filled: true,
-                        fillColor: const Color(0xfff9fafb),
-                        // 1. Configuração da borda quando o campo está parado
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xff9090a0),
-                            width: 0.1, // Ajustado de 0.1 para 1
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            12,
-                          ), // Ajustado de 8 para 12
-                        ),
-                        // 2. Configuração da borda quando o usuário clica (foco)
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(
-                              0xffd1655b,
-                            ), // Você pode trocar por outra cor se quiser destaque
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        // Borda padrão de fallback
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        hintText: 'Digite sua senha',
-                        hintStyle: const TextStyle(
-                          //fontFamily: 'Inter',
-                          color: Color(0xff626273),
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return 'Campo obrigatório';
-                        }
-                        if (value.length < 6) {
-                          return 'A senha deve conter mais de 6 caracteres';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => redefinirSenha(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Esqueci minha senha',
-                          style: TextStyle(
-                            color: AppColors.gray0,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 24),
-
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        gradient: LinearGradient(
-                          colors: [AppColors.primary, AppColors.primary1],
-                        ),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Lógica de login aqui
-                          _botaoEnviarClicado();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: const Size(230, 40),
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          'Entrar',
-                          style: TextStyle(
-                            fontFamily: 'roboto',
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16),
-
-                    Align(
-                      alignment: Alignment.center,
-                      child: TextButton(
-                        onPressed: () {
-                          // Mude para .push para manter o Login na pilha
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const redefinirSenha(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Ainda não tem uma conta?',
-                          style: TextStyle(
-                            color: Color(0xff323232),
-                            fontFamily: 'Lufga',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w100,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
-            ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.secudary,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(24),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'E-mail',
+                              style: TextStyle(
+                                color: AppColors.gray6,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          TextFormField(
+                            controller: _controllerEmail,
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'Campo obrigatório';
+                              }
+                              if (value.length < 6) {
+                                return 'O e-mail deve conter mais de 6 caracteres';
+                              }
+                              if (!value.contains('@')) {
+                                return 'E-mail inválido';
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              prefixIcon: Icon(
+                                Icons.email,
+                                color: AppColors.primaryBackground,
+                              ),
+                              filled: true,
+                              fillColor: const Color(0xfff9fafb),
+                              // 1. Configuração da borda quando o campo está parado
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color(0xff9090a0),
+                                  width: 0.1, // Ajustado de 0.1 para 1
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  12,
+                                ), // Ajustado de 8 para 12
+                              ),
+                              // 2. Configuração da borda quando o usuário clica (foco)
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color(
+                                    0xffd1655b,
+                                  ), // Você pode trocar por outra cor se quiser destaque
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              // Borda padrão de fallback
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              hintText: 'Digite seu e-mail',
+                              hintStyle: const TextStyle(
+                                //fontFamily: 'Inter',
+                                color: Color(0xff626273),
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Senha',
+                              style: TextStyle(
+                                color: AppColors.gray6,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          // Campo Senha
+                          SizedBox(height: 4),
+                          TextFormField(
+                            controller: _controllerSenha,
+                            keyboardType: TextInputType.number,
+                            obscureText: _seePasword == false ? true : false,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.fromLTRB(
+                                6,
+                                4,
+                                6,
+                                4,
+                              ),
+                              isDense: true,
+                              suffixIcon: GestureDetector(
+                                child: Icon(
+                                  _seePasword == false
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    _seePasword = !_seePasword;
+                                  });
+                                },
+                              ),
+
+                              prefixIcon: Icon(
+                                Icons.password_rounded,
+                                color: AppColors.primaryBackground,
+                              ),
+                              filled: true,
+                              fillColor: const Color(0xfff9fafb),
+                              // 1. Configuração da borda quando o campo está parado
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color(0xff9090a0),
+                                  width: 0.1, // Ajustado de 0.1 para 1
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  12,
+                                ), // Ajustado de 8 para 12
+                              ),
+                              // 2. Configuração da borda quando o usuário clica (foco)
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color(
+                                    0xffd1655b,
+                                  ), // Você pode trocar por outra cor se quiser destaque
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              // Borda padrão de fallback
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              hintText: 'Digite sua senha',
+                              hintStyle: const TextStyle(
+                                //fontFamily: 'Inter',
+                                color: Color(0xff626273),
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'Campo obrigatório';
+                              }
+                              if (value.length < 6) {
+                                return 'A senha deve conter mais de 6 caracteres';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 8),
+                          // Align(
+                          //   alignment: Alignment.centerRight,
+                          //   child: TextButton(
+                          //     onPressed: () {
+                          //       Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //           builder: (context) => redefinirSenha(),
+                          //         ),
+                          //       );
+                          //     },
+                          //     // child: Text(
+                          //     //   'Esqueci minha senha',
+                          //     //   style: TextStyle(
+                          //     //     color: AppColors.gray5,
+                          //     //     fontSize: 14,
+                          //     //     fontWeight: FontWeight.w600,
+                          //     //   ),
+                          //     // ),
+                          //   ),
+                          // ),
+                          SizedBox(height: 24),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppColors.primaryBackground,
+                                  AppColors.primaryBackground,
+                                ],
+                              ),
+                            ),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // Lógica de login aqui
+                                _botaoEnviarClicado();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                fixedSize: const Size(230, 40),
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Text(
+                                'Entrar',
+                                style: TextStyle(
+                                  fontFamily: 'roboto',
+                                  color: AppColors.secudary,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Align(
+                            alignment: Alignment.center,
+                            child: TextButton(
+                              onPressed: () {
+                                // Mude para .push para manter o Login na pilha
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const redefinirSenha(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Ainda não tem uma conta?',
+                                style: TextStyle(
+                                  color: AppColors.gray1,
+                                  fontFamily: 'Lufga',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w100,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

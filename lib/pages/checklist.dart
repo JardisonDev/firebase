@@ -6,6 +6,7 @@ import 'package:inspector_ro/models/checklist_item_model.dart';
 import 'package:inspector_ro/models/forklift_model.dart';
 import 'package:inspector_ro/widgets/checklist_item_tile.dart';
 import 'package:inspector_ro/controllers/checklist_controller.dart';
+import 'package:inspector_ro/models/checklist_model.dart';
 
 //import 'package:inspector_ro/models/checklist_model.dart';
 
@@ -21,6 +22,41 @@ bool atencao = false;
 late List<ChecklistItemModel> itens;
 
 class _ChecklistForkliftState extends State<ChecklistForklift> {
+  Future<void> salvarChecklist() async {
+    String resultado = controller.resultadoChecklist(itens);
+
+    ChecklistModel checklist = ChecklistModel(
+      operadorId: 'UID_USUARIO',
+      operadorNome: 'NOME_USUARIO',
+      matricula: 'MATRICULA_USUARIO',
+      empilhadeiraId: widget.empilhadeira.prefixo,
+      prefixo: widget.empilhadeira.prefixo,
+      frota: widget.empilhadeira.frota,
+      horimetro: widget.empilhadeira.km,
+      resultado: resultado,
+      itens: itens,
+      createdAt: DateTime.now(),
+      finalizado: true,
+    );
+
+    await controller.salvarChecklist(checklist: checklist);
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Checklist finalizado com sucesso'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+
+    Navigator.pop(context);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -302,6 +338,16 @@ class _ChecklistForkliftState extends State<ChecklistForklift> {
                         },
                       );
                     },
+                  ),
+                ),
+                SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      salvarChecklist();
+                    },
+                    child: const Text('Finalizar Checklist'),
                   ),
                 ),
               ],

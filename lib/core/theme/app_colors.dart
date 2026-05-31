@@ -7,13 +7,13 @@ class AppColors {
   static const Color primary = Color(0xFF5682A9);
   static const Color primary1 = Color(0xFFA9C6E4);
   static const Color primary2 = Color(0xFFE6F0F6);
-  static const Color secudary = Color(0xFFE5C369);
+  static const Color secudary = Color(0xFFFCC43B);
   static const Color superficie = Color(0xff3a3f46);
 
   // --- TYPOGRAPHY & BACKGROUND (Textos e Fundos) ---
   static const Color primaryText = Color(0xFF323232); // Texto Escuro (Títulos)
   static const Color secondaryText = Color(0xFFFFFFFF);
-  static const Color primaryBackground = Color(0xFF101418);
+  static const Color primaryBackground = Color(0xFF3C3D42);
   static const Color primaryBackgroundLinghet = Color(0xFF1a1c1e);
   static const Color secudaryBackground = Color(0xFFffffff);
 

@@ -22,7 +22,7 @@ class ForkliftModel {
       operador = map['operador'],
       km = map['km']?.toInt(),
       frota = map['frota']?.toInt(),
-      estadoOperacional = map['Estado Operacional'].toString();
+      estadoOperacional = map['estadoOperacional'].toString();
 
   // MODEL -> FIREBASE
   Map<String, dynamic> toMap() {

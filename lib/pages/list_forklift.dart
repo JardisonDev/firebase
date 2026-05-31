@@ -83,30 +83,51 @@ class _ListForkliftState extends State<ListForklift> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.gray1,
+      backgroundColor: AppColors.primaryBackground,
       drawer: Drawer(child: MenuDrawer()),
 
       appBar: AppBar(
-        backgroundColor: AppColors.gray1,
-        title: RichText(
-          text: TextSpan(
-            text: 'Lista',
-            style: const TextStyle(
-              fontFamily: 'Lufga',
-              color: AppColors.primaryText,
-              fontSize: 25,
-            ),
-            children: [
-              TextSpan(
-                text: 'Empilhadeiras',
-                style: TextStyle(
-                  fontFamily: 'Lufga',
-                  color: AppColors.primary,
-                  fontSize: 25,
+        backgroundColor: AppColors.primaryBackground,
+
+        //actions: [TextField()],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // TITLE
+            Row(
+              children: [
+                Text(
+                  'Lista',
+                  style: TextStyle(
+                    fontFamily: 'Lufga',
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.secondaryText,
+                  ),
                 ),
+                Text(
+                  'Empilhadeiras',
+                  style: TextStyle(
+                    fontFamily: 'Lufga',
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.secudary,
+                  ),
+                ),
+              ],
+            ),
+            // BOTÃO VOLTAR
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.arrow_back_ios_rounded,
+                color: AppColors.gray1,
+                size: 30,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
 
@@ -150,7 +171,7 @@ class _ListForkliftState extends State<ListForklift> {
                           child: SizedBox(
                             width: double.infinity,
 
-                            height: 110,
+                            height: 110, // altura
                             child: Stack(
                               children: [
                                 // CARD
@@ -377,7 +398,7 @@ class _ListForkliftState extends State<ListForklift> {
 
                                                       if (forklift
                                                               .estadoOperacional ==
-                                                          'Em operação')
+                                                          'Em Operação')
                                                         Icon(
                                                           Icons.check_rounded,
                                                           size: 18,
@@ -389,7 +410,7 @@ class _ListForkliftState extends State<ListForklift> {
                                                       // EM OPERAÇÃO
                                                       if (forklift
                                                               .estadoOperacional ==
-                                                          'Em operação')
+                                                          'Em Operação')
                                                         Text(
                                                           forklift
                                                               .estadoOperacional
@@ -469,7 +490,7 @@ class _ListForkliftState extends State<ListForklift> {
                                                   ),
                                                 ),
                                               if (forklift.estadoOperacional ==
-                                                  'Em operação')
+                                                  'Em Operação')
                                                 Expanded(
                                                   child: Image.asset(
                                                     'image/user-blue.png',

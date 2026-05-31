@@ -63,11 +63,11 @@ class ChecklistModel {
       operadorNome: map['operadorNome'] ?? '',
 
       matricula: map['matricula'] ?? '',
-      empilhadeiraId: map['empilhadeiraId'] ?? '',
+      empilhadeiraId: map['empilhadeiraId'] ?? 0,
 
-      prefixo: map['prefixo'] ?? '',
+      prefixo: map['prefixo'] ?? 0,
 
-      frota: map['frota'] ?? '',
+      frota: map['frota'] ?? 0,
 
       horimetro: map['horimetro'] ?? 0,
 
@@ -77,7 +77,7 @@ class ChecklistModel {
 
       assinatura: map['assinatura'] ?? '',
 
-      finalizado: map['finalizado'] ?? '',
+      finalizado: map['finalizado'] ?? false,
 
       createdAt: DateTime.parse(map['createdAt']),
 
@@ -93,6 +93,8 @@ class ChecklistModel {
       'operadorId': operadorId,
 
       'operadorNome': operadorNome,
+
+      'matricula': matricula,
 
       'empilhadeiraId': empilhadeiraId,
 
