@@ -4,7 +4,7 @@ import 'package:inspector_ro/models/forklift_model.dart';
 class EmpilhadeiraRepository {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  // BUSCAR TODAS EMPILHADEIRAS
+  //BUSCAR TODAS EMPILHADEIRAS
   Future<List<ForkliftModel>> buscarEmpilhadeiras() async {
     final snapshot = await firestore.collection('empilhadeiras').get();
 
@@ -12,6 +12,22 @@ class EmpilhadeiraRepository {
       return ForkliftModel.fromMap(doc.data());
     }).toList();
   }
+
+  // Future<List<ForkliftModel>> buscarEmpilhadeiras() async {
+  //   final snapshot = await FirebaseFirestore.instance
+  //       .collection('empilhadeiras')
+  //       .limit(1)
+  //       .get();
+
+  //   print('QTD DOCS: ${snapshot.docs.length}');
+
+  //   for (var doc in snapshot.docs) {
+  //     print('ID: ${doc.id}');
+  //     print(doc.data());
+  //   }
+
+  //   return [];
+  // }
 
   // BUSCAR POR PREFIXO
   Future<ForkliftModel?> buscarPorPrefixo(String prefixo) async {

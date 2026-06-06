@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: AppColors.primaryBackground,
+      backgroundColor: AppColors.gray1,
       body: SingleChildScrollView(
         child: SizedBox(
           height: size.height,
@@ -59,80 +59,40 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      //crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // LOGO
-                        Image.asset(
-                          'image/Logo-Forklift2_Prancheta 1.png',
-                          height: 100,
-                          width: 100,
-                        ),
-                        Text(
-                          'LYNK',
-                          style: TextStyle(
-                            fontFamily: 'Lufga',
-                            fontSize: 70,
-                            color: AppColors.secudary,
-                          ),
-                        ),
-                      ],
+                child: Container(
+                  width: double.infinity,
+                  //height: 250,
+                  decoration: BoxDecoration(
+                    color: AppColors.gray1,
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(24),
                     ),
-                    SizedBox(height: 40),
-                    // CIRCULO
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 12,
-                          height: 12,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.secudary,
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        Container(
-                          width: 12,
-                          height: 12,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.secudary,
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        Container(
-                          width: 12,
-                          height: 12,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.secudary,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Sistema de checklist para gestão \ne operação de empilhadeiras',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: AppColors.secudary,
-                        fontWeight: FontWeight.w400,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset(
+                        'image/TRACKCLOUD-04.png',
+                        height: 110,
+                        width: 110,
                       ),
-                    ),
-                    SizedBox(height: 20),
-                  ],
+                      Image.asset(
+                        'image/TRACKCLOUD-05.png',
+                        fit: BoxFit.fill,
+                        //height: 220,
+                        width: 220,
+                      ),
+
+                      SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppColors.secudary,
+                    //color: AppColors.secudary,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(24),
                     ),
@@ -144,18 +104,49 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         children: <Widget>[
                           SizedBox(height: 20),
+
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Bem-vindo',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                color: AppColors.gray1,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Acesse sua conta para contínuar',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: AppColors.gray1,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w100,
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 20),
+                          //TEXT E-MAIL
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               'E-mail',
                               style: TextStyle(
-                                color: AppColors.gray6,
+                                color: AppColors.gray1,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.normal,
                               ),
                             ),
                           ),
+
                           SizedBox(height: 4),
+
+                          // CAMPO E-MAIL
                           TextFormField(
                             controller: _controllerEmail,
                             validator: (String? value) {
@@ -174,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: InputDecoration(
                               isDense: true,
                               prefixIcon: Icon(
-                                Icons.email,
+                                Icons.email_outlined,
                                 color: AppColors.primaryBackground,
                               ),
                               filled: true,
@@ -186,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                                   width: 0.1, // Ajustado de 0.1 para 1
                                 ),
                                 borderRadius: BorderRadius.circular(
-                                  12,
+                                  50,
                                 ), // Ajustado de 8 para 12
                               ),
                               // 2. Configuração da borda quando o usuário clica (foco)
@@ -212,20 +203,22 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
+
                           SizedBox(height: 20),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               'Senha',
                               style: TextStyle(
-                                color: AppColors.gray6,
+                                color: AppColors.gray1,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.normal,
                               ),
                             ),
                           ),
-                          // Campo Senha
                           SizedBox(height: 4),
+
+                          // Campo SENHA
                           TextFormField(
                             controller: _controllerSenha,
                             keyboardType: TextInputType.number,
@@ -252,7 +245,9 @@ class _LoginPageState extends State<LoginPage> {
                               ),
 
                               prefixIcon: Icon(
-                                Icons.password_rounded,
+                                _seePasword == false
+                                    ? Icons.lock_outline
+                                    : Icons.lock_open_rounded,
                                 color: AppColors.primaryBackground,
                               ),
                               filled: true,
@@ -264,7 +259,7 @@ class _LoginPageState extends State<LoginPage> {
                                   width: 0.1, // Ajustado de 0.1 para 1
                                 ),
                                 borderRadius: BorderRadius.circular(
-                                  12,
+                                  50,
                                 ), // Ajustado de 8 para 12
                               ),
                               // 2. Configuração da borda quando o usuário clica (foco)
@@ -299,6 +294,7 @@ class _LoginPageState extends State<LoginPage> {
                               return null;
                             },
                           ),
+
                           SizedBox(height: 8),
                           // Align(
                           //   alignment: Alignment.centerRight,
@@ -322,13 +318,15 @@ class _LoginPageState extends State<LoginPage> {
                           //   ),
                           // ),
                           SizedBox(height: 24),
+
+                          //BOTÃO LOGIN
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               gradient: LinearGradient(
                                 colors: [
-                                  AppColors.primaryBackground,
-                                  AppColors.primaryBackground,
+                                  AppColors.secudary,
+                                  AppColors.secudary,
                                 ],
                               ),
                             ),
@@ -350,16 +348,20 @@ class _LoginPageState extends State<LoginPage> {
                                 'Entrar',
                                 style: TextStyle(
                                   fontFamily: 'roboto',
-                                  color: AppColors.secudary,
+                                  color: AppColors.primaryBackground,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
                           ),
+
                           SizedBox(height: 16),
+
+                          // BOTÃO REDEFINIR SENHA
                           Align(
                             alignment: Alignment.center,
+
                             child: TextButton(
                               onPressed: () {
                                 // Mude para .push para manter o Login na pilha

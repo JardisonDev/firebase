@@ -116,242 +116,266 @@ class _ChecklistForkliftState extends State<ChecklistForklift> {
         ),
         body: Padding(
           padding: EdgeInsets.all(16),
-          child: Expanded(
-            child: Column(
-              children: [
-                // DADOS DA EMPILHADEIRA
-                Container(
-                  padding: const EdgeInsets.all(6),
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    // DADOS DA EMPILHADEIRA
+                    Container(
+                      padding: const EdgeInsets.all(6),
 
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: AppColors.primary, width: 0.3),
-                    borderRadius: BorderRadius.circular(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: AppColors.primary,
+                          width: 0.3,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
 
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.gray0.withOpacity(0.1),
-                        blurRadius: 18,
-                        offset: const Offset(0, 8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.gray0.withOpacity(0.1),
+                            blurRadius: 18,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
 
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
 
-                          children: [
-                            // STATUS
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 8,
-                              ),
-
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 221, 240, 203),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-
-                              child: Text(
-                                'Disponivel',
-
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.disponivel,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-
-                            // PREFIXO - FROTA - HORIMETRO
-                            Row(
                               children: [
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // PREFIXO
-                                      Row(
-                                        children: [
-                                          // ICON
-                                          Icon(
-                                            Icons.confirmation_num,
-                                            size: 22,
-                                            color: AppColors.gray5,
-                                          ),
-                                          SizedBox(width: 6),
-                                          // PREFIXO
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Prefixo:',
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: AppColors.primaryText,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                              ),
-                                              Text(
-                                                widget.empilhadeira.prefixo
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  color: AppColors.primaryText,
-                                                  fontSize: 14,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                        child: VerticalDivider(),
-                                      ),
+                                // STATUS
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                    vertical: 8,
+                                  ),
 
-                                      // FROTA
-                                      Row(
-                                        children: [
-                                          // ICON
-                                          Icon(
-                                            Icons.confirmation_num_outlined,
-                                            size: 22,
-                                            color: AppColors.gray5,
-                                          ),
-                                          SizedBox(width: 6),
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                      255,
+                                      221,
+                                      240,
+                                      203,
+                                    ),
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
 
-                                          // FROTA
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Frota:',
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: AppColors.primaryText,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                              ),
-                                              Text(
-                                                widget.empilhadeira.frota
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  color: AppColors.primaryText,
-                                                  fontSize: 14,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                        child: VerticalDivider(),
-                                      ),
+                                  child: Text(
+                                    'Disponivel',
 
-                                      // HORIMETRO
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.speed_rounded,
-                                            size: 22,
-                                            color: AppColors.gray5,
-                                          ),
-                                          SizedBox(width: 6),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Horímetro:',
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: AppColors.primaryText,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                              ),
-                                              Text(
-                                                widget.empilhadeira.km
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  color: AppColors.primaryText,
-                                                  fontSize: 14,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.disponivel,
+                                    ),
                                   ),
                                 ),
+                                const SizedBox(height: 12),
+
+                                // PREFIXO - FROTA - HORIMETRO
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // PREFIXO
+                                          Row(
+                                            children: [
+                                              // ICON
+                                              Icon(
+                                                Icons.confirmation_num,
+                                                size: 22,
+                                                color: AppColors.gray5,
+                                              ),
+                                              SizedBox(width: 6),
+                                              // PREFIXO
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Prefixo:',
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      color:
+                                                          AppColors.primaryText,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    widget.empilhadeira.prefixo
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color:
+                                                          AppColors.primaryText,
+                                                      fontSize: 14,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                            child: VerticalDivider(),
+                                          ),
+
+                                          // FROTA
+                                          Row(
+                                            children: [
+                                              // ICON
+                                              Icon(
+                                                Icons.confirmation_num_outlined,
+                                                size: 22,
+                                                color: AppColors.gray5,
+                                              ),
+                                              SizedBox(width: 6),
+
+                                              // FROTA
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Frota:',
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      color:
+                                                          AppColors.primaryText,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    widget.empilhadeira.frota
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color:
+                                                          AppColors.primaryText,
+                                                      fontSize: 14,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                            child: VerticalDivider(),
+                                          ),
+
+                                          // HORIMETRO
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.speed_rounded,
+                                                size: 22,
+                                                color: AppColors.gray5,
+                                              ),
+                                              SizedBox(width: 6),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Horímetro:',
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      color:
+                                                          AppColors.primaryText,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    widget.empilhadeira.km
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color:
+                                                          AppColors.primaryText,
+                                                      fontSize: 14,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
                               ],
                             ),
-                            const SizedBox(height: 8),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
 
-                SizedBox(height: 12),
+                    SizedBox(height: 12),
 
-                Expanded(
-                  child: ListView.builder(
-                    // TAMANHO LIST => itens
-                    itemCount: itens.length,
+                    Expanded(
+                      child: ListView.builder(
+                        // TAMANHO LIST => itens
+                        itemCount: itens.length,
 
-                    itemBuilder: (context, index) {
-                      final item = itens[index];
+                        itemBuilder: (context, index) {
+                          final item = itens[index];
 
-                      return ChecklistItemTile(
-                        item: item,
+                          return ChecklistItemTile(
+                            item: item,
 
-                        onChanged: (status) {
-                          setState(() {
-                            item.status = status;
-                          });
+                            onChanged: (status) {
+                              setState(() {
+                                item.status = status;
+                              });
+                            },
+                          );
                         },
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          salvarChecklist();
+                        },
+                        child: const Text('Finalizar Checklist'),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      salvarChecklist();
-                    },
-                    child: const Text('Finalizar Checklist'),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

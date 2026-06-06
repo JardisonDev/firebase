@@ -4,6 +4,8 @@ import 'package:inspector_ro/components/menuDrawer.dart';
 import 'package:inspector_ro/core/theme/app_colors.dart';
 import 'package:inspector_ro/models/forklift_model.dart';
 import 'package:inspector_ro/pages/checklist.dart';
+import 'package:inspector_ro/pages/teste.dart';
+import 'package:inspector_ro/repositories/empilhadeira_repository.dart';
 
 class ListForklift extends StatefulWidget {
   const ListForklift({super.key});
@@ -19,6 +21,7 @@ class _ListForkliftState extends State<ListForklift> {
   double progress = 0;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final repository = EmpilhadeiraRepository();
 
   @override
   void initState() {
@@ -79,15 +82,34 @@ class _ListForkliftState extends State<ListForklift> {
     }
   }
 
+  // queryFarebase() async {
+  //   try {
+  //     final temp = await repository.buscarEmpilhadeiras();
+
+  //     setState(() {
+  //       listForklift = temp;
+  //       progress = 1;
+  //     });
+
+  //     await Future.delayed(const Duration(milliseconds: 500));
+
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //   }
+  // }
+
   // TELA
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryBackground,
+      backgroundColor: AppColors.gray1,
       drawer: Drawer(child: MenuDrawer()),
 
       appBar: AppBar(
-        backgroundColor: AppColors.primaryBackground,
+        backgroundColor: AppColors.gray1,
 
         //actions: [TextField()],
         title: Row(
@@ -101,17 +123,17 @@ class _ListForkliftState extends State<ListForklift> {
                   style: TextStyle(
                     fontFamily: 'Lufga',
                     fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.secondaryText,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.gray6,
                   ),
                 ),
                 Text(
-                  'Empilhadeiras',
+                  'Maquinas',
                   style: TextStyle(
                     fontFamily: 'Lufga',
                     fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.secudary,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.primary,
                   ),
                 ),
               ],
@@ -123,7 +145,7 @@ class _ListForkliftState extends State<ListForklift> {
               },
               child: Icon(
                 Icons.arrow_back_ios_rounded,
-                color: AppColors.gray1,
+                color: AppColors.gray6,
                 size: 30,
               ),
             ),
@@ -147,369 +169,457 @@ class _ListForkliftState extends State<ListForklift> {
               // =========================
               else
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: listForklift.length,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 200,
 
-                    itemBuilder: (BuildContext context, int index) {
-                      ForkliftModel forklift = listForklift[index];
+                            child: TextFormField(
+                              autofocus: false,
+                              keyboardType: TextInputType.number,
+                              cursorColor: AppColors.gray1,
+                              decoration: InputDecoration(
+                                hintText: 'Prefixo',
+                                hintStyle: TextStyle(
+                                  fontFamily: 'Inter',
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
 
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-
-                        child: GestureDetector(
-                          // NAVEGAÇÃO AQUI
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ChecklistForklift(empilhadeira: forklift),
-                              ),
-                            );
-                          },
-
-                          child: SizedBox(
-                            width: double.infinity,
-
-                            height: 110, // altura
-                            child: Stack(
-                              children: [
-                                // CARD
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 1,
-                                    bottom: 1,
-                                    right: 1,
-                                    top: 1,
+                                    width: 2,
                                   ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppColors.gray0,
 
-                                  child: Container(
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                filled: true,
+                                fillColor: AppColors.gray1,
+
+                                prefixIcon: Icon(
+                                  Icons.search_rounded,
+                                  color: AppColors.primary1,
+
+                                  size: 30,
+                                ),
+                              ),
+                              style: TextStyle(
+                                fontFamily: 'lufga',
+                                color: AppColors.gray4,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: listForklift.length,
+
+                          itemBuilder: (BuildContext context, int index) {
+                            ForkliftModel forklift = listForklift[index];
+
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+
+                              child: Center(
+                                child: GestureDetector(
+                                  // NAVEGAÇÃO AQUI
+                                  onTap: () async {
+                                    if (forklift.estadoOperacional ==
+                                        'Em Operação') {
+                                      print('Em operção');
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => testeScrin(),
+                                        ),
+                                      );
+                                    } else {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ChecklistForklift(
+                                                empilhadeira: forklift,
+                                              ),
+                                        ),
+                                      );
+                                      setState(() {
+                                        listForklift.clear();
+                                        isLoading = true;
+                                      });
+
+                                      await queryFarebase();
+                                    }
+
+                                    setState(() {
+                                      listForklift.clear();
+                                      isLoading = true;
+                                    });
+
+                                    await queryFarebase();
+                                  },
+
+                                  child: SizedBox(
                                     width: double.infinity,
 
-                                    height: 140,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: AppColors.primary,
-                                        width:
-                                            1, // A espessura da linha (ajuste conforme precisar)
-                                      ),
-                                      color: AppColors.primary2,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
+                                    height: 110, // altura
+                                    child: Stack(
+                                      children: [
+                                        // CARD
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 1,
+                                            bottom: 1,
+                                            right: 1,
+                                            top: 1,
+                                          ),
 
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
+                                          child: Container(
+                                            width: double.infinity,
 
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                            height: 140,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: AppColors.primary,
+                                                width:
+                                                    1, // A espessura da linha (ajuste conforme precisar)
+                                              ),
+                                              color: AppColors.primary2,
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
 
-                                              children: [
-                                                // DADOS
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Row(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+
+                                                      children: [
+                                                        // DADOS
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+
+                                                                children: [
+                                                                  // PREFIXO
+                                                                  Row(
+                                                                    children: [
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            6,
+                                                                      ),
+
+                                                                      Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+
+                                                                        children: [
+                                                                          Text(
+                                                                            'Prefixo:',
+                                                                            style: TextStyle(
+                                                                              fontSize: 12,
+                                                                              color: AppColors.gray5,
+                                                                            ),
+                                                                          ),
+
+                                                                          Text(
+                                                                            forklift.prefixo.toString(),
+
+                                                                            style: TextStyle(
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: AppColors.primaryText,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 12,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 20,
+                                                                    child:
+                                                                        VerticalDivider(),
+                                                                  ),
+
+                                                                  const SizedBox(
+                                                                    width: 12,
+                                                                  ),
+                                                                  // FROTA
+                                                                  Row(
+                                                                    children: [
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            6,
+                                                                      ),
+
+                                                                      Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+
+                                                                        children: [
+                                                                          Text(
+                                                                            'Frota:',
+                                                                            style: TextStyle(
+                                                                              fontSize: 12,
+                                                                              color: AppColors.gray5,
+                                                                            ),
+                                                                          ),
+
+                                                                          Text(
+                                                                            forklift.frota.toString(),
+
+                                                                            style: TextStyle(
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: AppColors.primaryText,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+
+                                                        const SizedBox(
+                                                          width: 12,
+                                                        ),
+                                                        // KM
+                                                        Row(
+                                                          children: [
+                                                            const SizedBox(
+                                                              width: 6,
+                                                            ),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+
+                                                              children: [
+                                                                Text(
+                                                                  'Horimetro:',
+                                                                  style: TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: AppColors
+                                                                        .gray5,
+                                                                  ),
+                                                                ),
+
+                                                                Text(
+                                                                  forklift.km
+                                                                      .toString(),
+
+                                                                  style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: AppColors
+                                                                        .primaryText,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  //SizedBox(height: 12),
+                                                  // STATUS - IMAGENS
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      // STATUS
+                                                      Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
-                                                                .start,
+                                                                .spaceBetween,
 
                                                         children: [
-                                                          // PREFIXO
                                                           Row(
                                                             children: [
+                                                              if (forklift
+                                                                      .estadoOperacional ==
+                                                                  'Disponível')
+                                                                Icon(
+                                                                  Icons
+                                                                      .play_arrow_rounded,
+                                                                  size: 18,
+                                                                  color: AppColors
+                                                                      .disponivel,
+                                                                ),
+
+                                                              if (forklift
+                                                                      .estadoOperacional ==
+                                                                  'Manutenção')
+                                                                Icon(
+                                                                  Icons
+                                                                      .build_rounded,
+                                                                  size: 14,
+                                                                  color: AppColors
+                                                                      .manutencao,
+                                                                ),
+
+                                                              if (forklift
+                                                                      .estadoOperacional ==
+                                                                  'Em Operação')
+                                                                Icon(
+                                                                  Icons
+                                                                      .check_rounded,
+                                                                  size: 18,
+                                                                  color: AppColors
+                                                                      .emOperacao,
+                                                                ),
+
                                                               const SizedBox(
-                                                                width: 6,
+                                                                width: 4,
                                                               ),
-
-                                                              Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-
-                                                                children: [
-                                                                  Text(
-                                                                    'Prefixo:',
-                                                                    style: TextStyle(
-                                                                      fontSize:
-                                                                          12,
-                                                                      color: AppColors
-                                                                          .gray5,
-                                                                    ),
+                                                              // EM OPERAÇÃO
+                                                              if (forklift
+                                                                      .estadoOperacional ==
+                                                                  'Em Operação')
+                                                                Text(
+                                                                  forklift
+                                                                      .estadoOperacional
+                                                                      .toString(),
+                                                                  style: const TextStyle(
+                                                                    fontSize:
+                                                                        13,
+                                                                    fontFamily:
+                                                                        'Inter',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: AppColors
+                                                                        .emOperacao,
                                                                   ),
-
-                                                                  Text(
-                                                                    forklift
-                                                                        .prefixo
-                                                                        .toString(),
-
-                                                                    style: TextStyle(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: AppColors
-                                                                          .primaryText,
-                                                                    ),
+                                                                ),
+                                                              // EM MANUTENÇÃO
+                                                              if (forklift
+                                                                      .estadoOperacional ==
+                                                                  'Manutenção')
+                                                                Text(
+                                                                  forklift
+                                                                      .estadoOperacional
+                                                                      .toString(),
+                                                                  style: const TextStyle(
+                                                                    fontSize:
+                                                                        13,
+                                                                    fontFamily:
+                                                                        'Inter',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: AppColors
+                                                                        .manutencao,
                                                                   ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 12,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 20,
-                                                            child:
-                                                                VerticalDivider(),
-                                                          ),
+                                                                ),
 
-                                                          const SizedBox(
-                                                            width: 12,
-                                                          ),
-                                                          // FROTA
-                                                          Row(
-                                                            children: [
-                                                              const SizedBox(
-                                                                width: 6,
-                                                              ),
-
-                                                              Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-
-                                                                children: [
-                                                                  Text(
-                                                                    'Frota:',
-                                                                    style: TextStyle(
-                                                                      fontSize:
-                                                                          12,
-                                                                      color: AppColors
-                                                                          .gray5,
-                                                                    ),
+                                                              // DISPONIVEL
+                                                              if (forklift
+                                                                      .estadoOperacional ==
+                                                                  'Disponível')
+                                                                Text(
+                                                                  forklift
+                                                                      .estadoOperacional
+                                                                      .toString(),
+                                                                  style: const TextStyle(
+                                                                    fontSize:
+                                                                        13,
+                                                                    fontFamily:
+                                                                        'Inter',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: AppColors
+                                                                        .disponivel,
                                                                   ),
-
-                                                                  Text(
-                                                                    forklift
-                                                                        .frota
-                                                                        .toString(),
-
-                                                                    style: TextStyle(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: AppColors
-                                                                          .primaryText,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
+                                                                ),
                                                             ],
                                                           ),
                                                         ],
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
 
-                                                const SizedBox(width: 12),
-                                                // KM
-                                                Row(
-                                                  children: [
-                                                    const SizedBox(width: 6),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-
-                                                      children: [
-                                                        Text(
-                                                          'Horimetro:',
-                                                          style: TextStyle(
-                                                            fontSize: 12,
-                                                            color:
-                                                                AppColors.gray5,
-                                                          ),
-                                                        ),
-
-                                                        Text(
-                                                          forklift.km
-                                                              .toString(),
-
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: AppColors
-                                                                .primaryText,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          //SizedBox(height: 12),
-                                          // STATUS - IMAGENS
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              // STATUS
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-
-                                                children: [
-                                                  Row(
-                                                    children: [
                                                       if (forklift
                                                               .estadoOperacional ==
                                                           'Disponível')
-                                                        Icon(
-                                                          Icons
-                                                              .play_arrow_rounded,
-                                                          size: 18,
-                                                          color: AppColors
-                                                              .disponivel,
+                                                        Expanded(
+                                                          child: Image.asset(
+                                                            'image/PAGE-HOME-ICONS [Recuperado]_Prancheta 1.png',
+                                                            fit: BoxFit.fill,
+                                                          ),
                                                         ),
-
                                                       if (forklift
                                                               .estadoOperacional ==
                                                           'Manutenção')
-                                                        Icon(
-                                                          Icons.build_rounded,
-                                                          size: 14,
-                                                          color: AppColors
-                                                              .manutencao,
+                                                        Expanded(
+                                                          child: Image.asset(
+                                                            'image/PAGE-HOME-ICONS [Recuperado]_Prancheta 1.png',
+                                                            fit: BoxFit.fill,
+                                                          ),
                                                         ),
-
                                                       if (forklift
                                                               .estadoOperacional ==
                                                           'Em Operação')
-                                                        Icon(
-                                                          Icons.check_rounded,
-                                                          size: 18,
-                                                          color: AppColors
-                                                              .emOperacao,
-                                                        ),
-
-                                                      const SizedBox(width: 4),
-                                                      // EM OPERAÇÃO
-                                                      if (forklift
-                                                              .estadoOperacional ==
-                                                          'Em Operação')
-                                                        Text(
-                                                          forklift
-                                                              .estadoOperacional
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                                fontSize: 13,
-                                                                fontFamily:
-                                                                    'Inter',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: AppColors
-                                                                    .emOperacao,
-                                                              ),
-                                                        ),
-                                                      // EM MANUTENÇÃO
-                                                      if (forklift
-                                                              .estadoOperacional ==
-                                                          'Manutenção')
-                                                        Text(
-                                                          forklift
-                                                              .estadoOperacional
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                                fontSize: 13,
-                                                                fontFamily:
-                                                                    'Inter',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: AppColors
-                                                                    .manutencao,
-                                                              ),
-                                                        ),
-
-                                                      // DISPONIVEL
-                                                      if (forklift
-                                                              .estadoOperacional ==
-                                                          'Disponível')
-                                                        Text(
-                                                          forklift
-                                                              .estadoOperacional
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                                fontSize: 13,
-                                                                fontFamily:
-                                                                    'Inter',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: AppColors
-                                                                    .disponivel,
-                                                              ),
+                                                        Expanded(
+                                                          child: Image.asset(
+                                                            'image/user-blue.png',
+                                                            fit: BoxFit.fill,
+                                                          ),
                                                         ),
                                                     ],
                                                   ),
                                                 ],
                                               ),
-
-                                              if (forklift.estadoOperacional ==
-                                                  'Disponível')
-                                                Expanded(
-                                                  child: Image.asset(
-                                                    'image/forklift.png',
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                              if (forklift.estadoOperacional ==
-                                                  'Manutenção')
-                                                Expanded(
-                                                  child: Image.asset(
-                                                    'image/forklift-manutention-blue.png',
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                              if (forklift.estadoOperacional ==
-                                                  'Em Operação')
-                                                Expanded(
-                                                  child: Image.asset(
-                                                    'image/user-blue.png',
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                            ],
+                                            ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
                 ),
             ],

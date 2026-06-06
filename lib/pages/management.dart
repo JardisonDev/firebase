@@ -6,6 +6,7 @@ import 'package:inspector_ro/core/theme/app_colors.dart';
 
 import 'package:inspector_ro/models/forklift_model.dart';
 import 'package:inspector_ro/pages/list_forklift.dart';
+import 'package:inspector_ro/pages/teste.dart';
 
 class ManagementScreen extends StatefulWidget {
   const ManagementScreen({super.key});
@@ -18,12 +19,12 @@ class _ManagementScreenState extends State<ManagementScreen> {
   // Estanciar Firebase.
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  //Lista das Empilhadeiras.
+  //LISTAS DE EMPILHADEIRAS.
   List<ForkliftModel> listForklift = [];
 
   String _emailLogado = '';
 
-  // Recupear usuario logado.
+  // RECUPERA USUARIO LOGADO.
   Future _recuperarUsuario() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? userLogado = auth.currentUser;
@@ -43,150 +44,146 @@ class _ManagementScreenState extends State<ManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryBackground,
+      backgroundColor: AppColors.gray1,
       appBar: AppBar(
-        backgroundColor: AppColors.primaryBackground,
-        title: RichText(
-          text: TextSpan(
-            text: 'Gestão',
-            style: TextStyle(
-              fontFamily: 'Lufga',
-              color: AppColors.gray1,
-              fontSize: 25,
-            ),
-            children: [
-              TextSpan(
-                text: 'Operacional',
-                style: TextStyle(
-                  fontFamily: 'Lufga',
-                  color: AppColors.primary,
-                  fontSize: 25,
+        backgroundColor: AppColors.primary,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // TITULO
+            Row(
+              children: [
+                Text(
+                  'Gestão Operacional',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.gray1,
+                  ),
                 ),
+              ],
+            ),
+            // BOTÃO VOLTAR
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.arrow_back_ios_rounded,
+                color: AppColors.gray1,
+                size: 30,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+
       drawer: Drawer(child: MenuDrawer()),
+
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Center(
             child: Column(
               children: [
-                SizedBox(height: 22),
-                Stack(
-                  alignment: Alignment.topCenter,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // 1. CAMADA DE FUNDO (Sombra/Borda inferior)
-                    Material(
-                      elevation: 4,
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppColors.primary,
-                      child: Container(
-                        width: double.infinity,
-                        height: 135,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
+                    Column(
+                      children: [
+                        SizedBox(height: 6),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => ListForklift()),
+                            );
+                            print('CLICOU');
+                          },
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.primary,
+                                width: 1,
+                              ),
+                              color: AppColors.primary2,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(3),
+                              child: Image.asset(
+                                'image/PAGE-HOME-ICONS [Recuperado]_Prancheta 1.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(height: 6),
+                        Text('Novo Checklist'),
+                      ],
                     ),
-
-                    // 2. CAMADA DA FRENTE (Conteúdo principal)
-                    Container(
-                      width: double.infinity,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryText,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment
-                              .spaceBetween, // Separa o topo da base
-                          children: [
-                            // PRIMEIRA ROW: Cabeçalho do Card
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Novo Checklist',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 19,
-                                          color: AppColors.primaryText,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Iniciar inspeção de rotina do equipamento',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 12,
-                                          color: AppColors.primaryText,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                    SizedBox(width: 12),
+                    Column(
+                      children: [
+                        SizedBox(height: 6),
+                        Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColors.primary,
+                              width: 1,
                             ),
-
-                            // SEGUNDA ROW: Rodapé do Card (Ícone e Ação)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .end, // Alinha o botão e o ícone na base
-                              children: [
-                                const Icon(
-                                  Icons.forklift,
-                                  color: AppColors.primary,
-                                  size: 45,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => ListForklift(),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 24,
-                                      vertical: 10,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.primary,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: const Text(
-                                      'Iniciar',
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto',
-                                        color: AppColors.primaryText,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            color: AppColors.primary2,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(3),
+                            child: Image.asset(
+                              'image/PAGE-HOME-ICONS [Recuperado]_Prancheta 1.png',
+                              fit: BoxFit.cover,
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        SizedBox(height: 6),
+                        Text('Abastecimento'),
+                      ],
+                    ),
+                    SizedBox(width: 12),
+                    Column(
+                      children: [
+                        SizedBox(height: 6),
+                        Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColors.primary,
+                              width: 1,
+                            ),
+                            color: AppColors.primary2,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(3),
+                            child: Image.asset(
+                              'image/PAGE-HOME-ICONS [Recuperado]_Prancheta 1.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 6),
+                        Text('Abastecimento'),
+                      ],
                     ),
                   ],
                 ),
-                SizedBox(height: 12),
+
+                SizedBox(height: 22),
+
                 Stack(
                   alignment: Alignment.topCenter,
                   children: [

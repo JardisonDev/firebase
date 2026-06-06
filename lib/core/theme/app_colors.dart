@@ -14,7 +14,7 @@ class AppColors {
   static const Color primaryText = Color(0xFF323232); // Texto Escuro (Títulos)
   static const Color secondaryText = Color(0xFFFFFFFF);
   static const Color primaryBackground = Color(0xFF3C3D42);
-  static const Color primaryBackgroundLinghet = Color(0xFF1a1c1e);
+  static const Color primaryBackgroundLinghet = Color(0xFF52565F);
   static const Color secudaryBackground = Color(0xFFffffff);
 
   // --- ESCALA DE CINZAS (Novas cores da imagem) ---
