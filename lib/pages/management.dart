@@ -5,6 +5,7 @@ import 'package:inspector_ro/components/menuDrawer.dart';
 import 'package:inspector_ro/core/theme/app_colors.dart';
 
 import 'package:inspector_ro/models/forklift_model.dart';
+import 'package:inspector_ro/pages/list.dart';
 import 'package:inspector_ro/pages/list_forklift.dart';
 import 'package:inspector_ro/pages/teste.dart';
 
@@ -46,245 +47,272 @@ class _ManagementScreenState extends State<ManagementScreen> {
     return Scaffold(
       backgroundColor: AppColors.gray1,
       appBar: AppBar(
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.gray1,
+        automaticallyImplyLeading: false, // Desativa o menu padrão
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // TITULO
+            Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.menu),
+                iconSize: 30,
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
+            ),
             Row(
               children: [
-                Text(
-                  'Gestão Operacional',
+                const Text(
+                  'Operacional',
+
                   style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal,
-                    color: AppColors.gray1,
+                    fontFamily: 'Lufga',
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const Text(
+                  'Operacional',
+
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontFamily: 'Lufga',
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
-            ),
-            // BOTÃO VOLTAR
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.arrow_back_ios_rounded,
-                color: AppColors.gray1,
-                size: 30,
-              ),
             ),
           ],
         ),
       ),
 
       drawer: Drawer(child: MenuDrawer()),
-
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Center(
             child: Column(
               children: [
+                // CHECKLIST - ABSTECIMENTO - FROTAS
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  spacing: 12,
                   children: [
+                    // NOVO CHECKLIST
                     Column(
                       children: [
                         SizedBox(height: 6),
                         GestureDetector(
                           onTap: () {
+                            // Verifique se o contexto ainda é válido antes de navegar
+                            if (!context.mounted) return;
+
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => ListForklift()),
+                              MaterialPageRoute(
+                                builder: (_) => const listMaquinas(),
+                              ),
                             );
                             print('CLICOU');
                           },
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppColors.primary,
-                                width: 1,
+
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (_) => ListForklift()),
+                          // );
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 110,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.primary,
+                                    width: 1,
+                                  ),
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
                               ),
-                              color: AppColors.primary2,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(3),
-                              child: Image.asset(
-                                'image/PAGE-HOME-ICONS [Recuperado]_Prancheta 1.png',
-                                fit: BoxFit.cover,
+                              Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.primary,
+                                    width: 1,
+                                  ),
+                                  color: AppColors.primary2,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(3),
+                                  child: Image.asset(
+                                    'image/disponivel.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                         SizedBox(height: 6),
-                        Text('Novo Checklist'),
+                        Text(
+                          'Novo Checklist',
+
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryText,
+                          ),
+                        ),
                       ],
                     ),
-                    SizedBox(width: 12),
+
+                    // ABASTECIMENTO
                     Column(
                       children: [
                         SizedBox(height: 6),
-                        Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: AppColors.primary,
-                              width: 1,
-                            ),
-                            color: AppColors.primary2,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(3),
-                            child: Image.asset(
-                              'image/PAGE-HOME-ICONS [Recuperado]_Prancheta 1.png',
-                              fit: BoxFit.cover,
-                            ),
+                        GestureDetector(
+                          onTap: () {
+                            // Verifique se o contexto ainda é válido antes de navegar
+                            if (!context.mounted) return;
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const listMaquinas(),
+                              ),
+                            );
+                            print('CLICOU');
+                          },
+
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (_) => ListForklift()),
+                          // );
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 110,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.primary,
+                                    width: 1,
+                                  ),
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.primary,
+                                    width: 1,
+                                  ),
+                                  color: AppColors.primary2,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(3),
+                                  child: Image.asset(
+                                    'image/abastecimento.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(height: 6),
-                        Text('Abastecimento'),
+                        Text(
+                          'Abastecimento',
+
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryText,
+                          ),
+                        ),
                       ],
                     ),
-                    SizedBox(width: 12),
+
+                    // FROTAS
                     Column(
                       children: [
                         SizedBox(height: 6),
-                        Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: AppColors.primary,
-                              width: 1,
-                            ),
-                            color: AppColors.primary2,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(3),
-                            child: Image.asset(
-                              'image/PAGE-HOME-ICONS [Recuperado]_Prancheta 1.png',
-                              fit: BoxFit.cover,
-                            ),
+                        GestureDetector(
+                          onTap: () {
+                            // Verifique se o contexto ainda é válido antes de navegar
+                            if (!context.mounted) return;
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const listMaquinas(),
+                              ),
+                            );
+                            print('CLICOU');
+                          },
+
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (_) => ListForklift()),
+                          // );
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 110,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.primary,
+                                    width: 1,
+                                  ),
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.primary,
+                                    width: 1,
+                                  ),
+                                  color: AppColors.primary2,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(3),
+                                  child: Image.asset(
+                                    'image/forklift.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(height: 6),
-                        Text('Abastecimento'),
+                        Text(
+                          'Frotas',
+
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryText,
+                          ),
+                        ),
                       ],
                     ),
                   ],
                 ),
 
-                SizedBox(height: 22),
-
-                Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    // 1. CAMADA DE FUNDO (Sombra/Borda)
-                    Material(
-                      elevation: 4,
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppColors.primaryText,
-                      child: Container(
-                        width: double.infinity,
-                        height: 135,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                    ),
-
-                    // 2. CAMADA DA FRENTE (Conteúdo)
-                    Container(
-                      width: double.infinity,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment
-                              .spaceBetween, // Joga uma Row para o topo e outra para o fundo
-                          children: [
-                            // PRIMEIRA ROW: Textos
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Registrar Abastecimentos',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 19,
-                                          color: AppColors.primaryText,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Clique para registrar o combustível consumido',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 12,
-                                          color: AppColors.primaryText,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            // SEGUNDA ROW: Ícone e Botão
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //alignment: Alignment.bottomCenter,
-                              children: [
-                                const Icon(
-                                  Icons.local_gas_station,
-                                  color: AppColors.primaryText,
-                                  size: 45,
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 24,
-                                    vertical: 10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryText,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: const Text(
-                                    'Registrar',
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      color: AppColors.primary,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 SizedBox(height: 12),
                 Container(
                   width: double.infinity,
@@ -482,7 +510,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
                               borderRadius: BorderRadius.circular(10),
 
                               child: Image.asset(
-                                'image/user-blue.png',
+                                'image/forklift.png',
 
                                 width: 65,
                                 height: 65,

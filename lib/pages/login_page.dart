@@ -58,37 +58,124 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // LOGO
+              // Expanded(
+              //   child: SizedBox(
+              //     child: Container(
+              //       width: 100,
+              //       height: 100,
+              //       child: Image.asset('image/Logo-Forklift_Prancheta 1.png'),
+              //     ),
+              //   ),
+              // ),
+              // LOGO
               Expanded(
-                child: Container(
-                  width: double.infinity,
-                  //height: 250,
-                  decoration: BoxDecoration(
-                    color: AppColors.gray1,
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 75,
+                      width: 75,
+                      child: Image.asset('image/Logo-Forklift-03.png'),
                     ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        'image/TRACKCLOUD-04.png',
-                        height: 110,
-                        width: 110,
+                    SizedBox(
+                      height: 100,
+                      child: Image.asset('image/otrack-text.png'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        0,
+                        20,
+                        16,
+                        20,
                       ),
-                      Image.asset(
-                        'image/TRACKCLOUD-05.png',
-                        fit: BoxFit.fill,
-                        //height: 220,
-                        width: 220,
+                      child: Stack(
+                        children: [
+                          // Container de fundo (o efeito de sombra/borda)
+                          Container(
+                            width: double.infinity,
+                            height: 60,
+                            decoration: const BoxDecoration(
+                              color: AppColors
+                                  .emOperacao, // Substitua pelo seu orangePeel
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(12),
+                                bottomRight: Radius.circular(12),
+                              ),
+                            ),
+                          ),
+                          // Container de conteúdo
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                              0,
+                              0,
+                              6,
+                              0,
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: AppColors
+                                    .primary1, // Substitua pelo seu customColor11
+                                borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(12),
+                                  bottomRight: Radius.circular(12),
+                                ),
+                                border: Border.all(
+                                  color: Colors
+                                      .grey, // Substitua pelo seu secondary
+                                  width: 0.1,
+                                ),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                  16,
+                                  0,
+                                  0,
+                                  0,
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Bem-vindo',
+                                        style: TextStyle(
+                                          fontFamily: 'Roboto',
+                                          color: AppColors.gray6,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Acesse sua conta para contínuar',
+                                        style: TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: AppColors.gray6,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w100,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-
-                      SizedBox(height: 20),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
+
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -102,42 +189,19 @@ class _LoginPageState extends State<LoginPage> {
                     child: Form(
                       key: _formKey,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          SizedBox(height: 20),
+                          SizedBox(height: 12),
 
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Bem-vindo',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                color: AppColors.gray1,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Acesse sua conta para contínuar',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                color: AppColors.gray1,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w100,
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(height: 20),
+                          SizedBox(height: 12),
                           //TEXT E-MAIL
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               'E-mail',
                               style: TextStyle(
-                                color: AppColors.gray1,
+                                color: AppColors.gray6,
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
                               ),
@@ -165,8 +229,8 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: InputDecoration(
                               isDense: true,
                               prefixIcon: Icon(
-                                Icons.email_outlined,
-                                color: AppColors.primaryBackground,
+                                Icons.email,
+                                color: AppColors.primary,
                               ),
                               filled: true,
                               fillColor: const Color(0xfff9fafb),
@@ -204,13 +268,15 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
 
-                          SizedBox(height: 20),
+                          SizedBox(height: 12),
+
+                          // TEXT SENHA
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               'Senha',
                               style: TextStyle(
-                                color: AppColors.gray1,
+                                color: AppColors.gray6,
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
                               ),
@@ -218,7 +284,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           SizedBox(height: 4),
 
-                          // Campo SENHA
+                          // CAMPO SENHA
                           TextFormField(
                             controller: _controllerSenha,
                             keyboardType: TextInputType.number,
@@ -246,9 +312,9 @@ class _LoginPageState extends State<LoginPage> {
 
                               prefixIcon: Icon(
                                 _seePasword == false
-                                    ? Icons.lock_outline
+                                    ? Icons.lock
                                     : Icons.lock_open_rounded,
-                                color: AppColors.primaryBackground,
+                                color: AppColors.primary,
                               ),
                               filled: true,
                               fillColor: const Color(0xfff9fafb),
@@ -324,10 +390,7 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               gradient: LinearGradient(
-                                colors: [
-                                  AppColors.secudary,
-                                  AppColors.secudary,
-                                ],
+                                colors: [AppColors.primary, AppColors.primary],
                               ),
                             ),
                             child: ElevatedButton(
@@ -348,7 +411,7 @@ class _LoginPageState extends State<LoginPage> {
                                 'Entrar',
                                 style: TextStyle(
                                   fontFamily: 'roboto',
-                                  color: AppColors.primaryBackground,
+                                  color: AppColors.gray1,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                 ),

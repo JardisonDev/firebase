@@ -581,7 +581,7 @@ class _ListForkliftState extends State<ListForklift> {
                                                           'Disponível')
                                                         Expanded(
                                                           child: Image.asset(
-                                                            'image/PAGE-HOME-ICONS [Recuperado]_Prancheta 1.png',
+                                                            'image/disponivel.png',
                                                             fit: BoxFit.fill,
                                                           ),
                                                         ),
@@ -590,7 +590,7 @@ class _ListForkliftState extends State<ListForklift> {
                                                           'Manutenção')
                                                         Expanded(
                                                           child: Image.asset(
-                                                            'image/PAGE-HOME-ICONS [Recuperado]_Prancheta 1.png',
+                                                            'image/manutencao.png',
                                                             fit: BoxFit.fill,
                                                           ),
                                                         ),
@@ -599,7 +599,7 @@ class _ListForkliftState extends State<ListForklift> {
                                                           'Em Operação')
                                                         Expanded(
                                                           child: Image.asset(
-                                                            'image/user-blue.png',
+                                                            'image/user.png',
                                                             fit: BoxFit.fill,
                                                           ),
                                                         ),
@@ -645,23 +645,13 @@ class _ListForkliftState extends State<ListForklift> {
 
             RichText(
               text: TextSpan(
-                text: 'Fork',
+                text: 'Otrack',
                 style: const TextStyle(
                   fontSize: 45,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                   fontFamily: 'Lufga',
                 ),
-                children: [
-                  TextSpan(
-                    text: 'Lift',
-                    style: TextStyle(
-                      fontSize: 45,
-                      fontFamily: 'Lufga',
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ],
               ),
             ),
 

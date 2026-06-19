@@ -4,6 +4,7 @@ class ForkliftModel {
   final int km;
   final String estadoOperacional;
   final String uid_operador;
+  final String operador;
 
   ForkliftModel({
     required this.prefixo,
@@ -11,6 +12,7 @@ class ForkliftModel {
     required this.frota,
     required this.uid_operador,
     required this.estadoOperacional,
+    required this.operador,
   });
 
   factory ForkliftModel.fromMap(Map<String, dynamic> map) {
@@ -20,6 +22,7 @@ class ForkliftModel {
       frota: (map['frota'] as num?)?.toInt() ?? 0,
       uid_operador: map['uid_operador'].toString(),
       estadoOperacional: map['estadoOperacional']?.toString() ?? '',
+      operador: map['operador']?.toString() ?? '',
     );
   }
 
@@ -30,6 +33,7 @@ class ForkliftModel {
       'frota': frota,
       'estadoOperacional': estadoOperacional,
       'uid_operador': uid_operador,
+      'operador': operador,
     };
   }
 }
