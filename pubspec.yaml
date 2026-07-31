@@ -39,6 +39,7 @@ dependencies:
   cloud_firestore: ^6.3.0
   mobile_scanner: ^7.0.1
   audioplayers: ^6.0.0
+  connectivity_plus: ^6.1.5
 
 dev_dependencies:
   flutter_test:
@@ -74,9 +75,10 @@ flutter:
     - image/manutencao.png
     - image/user.png
     - image/Logo-Forklift_Prancheta 1.png
-    - image/otrack-text.png
     - image/Logo-Forklift-03.png
     - assets/audio\quick-win.mp3
+    - image/qrcode.png
+    - image/Logo-Forklift-black_Prancheta 1.png
 
 
 

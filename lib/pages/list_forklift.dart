@@ -4,7 +4,7 @@ import 'package:inspector_ro/components/menuDrawer.dart';
 import 'package:inspector_ro/core/theme/app_colors.dart';
 import 'package:inspector_ro/models/forklift_model.dart';
 import 'package:inspector_ro/pages/checklist.dart';
-import 'package:inspector_ro/pages/teste.dart';
+import 'package:inspector_ro/pages/operacao.dart';
 import 'package:inspector_ro/repositories/empilhadeira_repository.dart';
 
 class ListForklift extends StatefulWidget {
@@ -81,25 +81,6 @@ class _ListForkliftState extends State<ListForklift> {
       debugPrint(s.toString());
     }
   }
-
-  // queryFarebase() async {
-  //   try {
-  //     final temp = await repository.buscarEmpilhadeiras();
-
-  //     setState(() {
-  //       listForklift = temp;
-  //       progress = 1;
-  //     });
-
-  //     await Future.delayed(const Duration(milliseconds: 500));
-
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
 
   // TELA
   @override
@@ -245,7 +226,9 @@ class _ListForkliftState extends State<ListForklift> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => testeScrin(),
+                                          builder: (context) => AvisoOperacao(
+                                            prefixo: forklift.prefixo.toInt(),
+                                          ),
                                         ),
                                       );
                                     } else {
@@ -645,13 +628,24 @@ class _ListForkliftState extends State<ListForklift> {
 
             RichText(
               text: TextSpan(
-                text: 'Otrack',
+                text: 'Check',
                 style: const TextStyle(
                   fontSize: 45,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                   fontFamily: 'Lufga',
                 ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Point',
+                    style: TextStyle(
+                      fontSize: 45,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                      fontFamily: 'Lufga',
+                    ),
+                  ),
+                ],
               ),
             ),
 

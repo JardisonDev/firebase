@@ -5,9 +5,11 @@ import 'package:inspector_ro/components/menuDrawer.dart';
 import 'package:inspector_ro/core/theme/app_colors.dart';
 
 import 'package:inspector_ro/models/forklift_model.dart';
+import 'package:inspector_ro/pages/checklist.dart';
 import 'package:inspector_ro/pages/list.dart';
 import 'package:inspector_ro/pages/list_forklift.dart';
-import 'package:inspector_ro/pages/teste.dart';
+import 'package:inspector_ro/pages/scanner_qr.dart';
+import 'package:inspector_ro/pages/operacao.dart';
 
 class ManagementScreen extends StatefulWidget {
   const ManagementScreen({super.key});
@@ -62,7 +64,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
             Row(
               children: [
                 const Text(
-                  'Operacional',
+                  'Gestão',
 
                   style: TextStyle(
                     fontFamily: 'Lufga',
@@ -117,53 +119,58 @@ class _ManagementScreenState extends State<ManagementScreen> {
                           },
 
                           // Navigator.push(
+
                           //   context,
                           //   MaterialPageRoute(builder: (_) => ListForklift()),
                           // );
-                          child: Stack(
-                            children: [
-                              Container(
-                                height: 110,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.primary,
-                                    width: 1,
-                                  ),
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.primary,
+                                width: 1,
                               ),
-                              Container(
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.primary,
-                                    width: 1,
+                              color: AppColors.primary2,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      'Novo Checklist',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.secudaryBackground,
+                                      ),
+                                    ),
                                   ),
-                                  color: AppColors.primary2,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(3),
-                                  child: Image.asset(
-                                    'image/disponivel.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 6),
-                        Text(
-                          'Novo Checklist',
 
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryText,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2),
+                                      child: Image.asset(
+                                        'image/disponivel.png',
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -191,121 +198,155 @@ class _ManagementScreenState extends State<ManagementScreen> {
                           //   context,
                           //   MaterialPageRoute(builder: (_) => ListForklift()),
                           // );
-                          child: Stack(
-                            children: [
-                              Container(
-                                height: 110,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.primary,
-                                    width: 1,
-                                  ),
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.primary,
+                                width: 1,
                               ),
-                              Container(
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.primary,
-                                    width: 1,
+                              color: AppColors.primary2,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.error,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      'Abastecimento',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.secudaryBackground,
+                                      ),
+                                    ),
                                   ),
-                                  color: AppColors.primary2,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(3),
-                                  child: Image.asset(
-                                    'image/abastecimento.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 6),
-                        Text(
-                          'Abastecimento',
 
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryText,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2),
+                                      child: Image.asset(
+                                        'image/abastecimento.png',
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
 
-                    // FROTAS
+                    // SCANNER
                     Column(
                       children: [
                         SizedBox(height: 6),
                         GestureDetector(
-                          onTap: () {
-                            // Verifique se o contexto ainda é válido antes de navegar
-                            if (!context.mounted) return;
-
-                            Navigator.push(
+                          onTap: () async {
+                            final codigoLido = await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const listMaquinas(),
+                                builder: (_) => const ScannerQrPage(),
                               ),
                             );
-                            print('CLICOU');
+
+                            if (codigoLido != null) {
+                              print('QR LIDO: $codigoLido');
+                            }
+                            if (codigoLido.toString().length != 8) {
+                              print('QR INVALIDO');
+                              return;
+                            }
+                            final doc = await FirebaseFirestore.instance
+                                .collection('empilhadeiras')
+                                .doc(codigoLido.toString())
+                                .get();
+                            if (doc.exists) {
+                              final forklift = ForkliftModel.fromMap(
+                                doc.data()!,
+                              );
+
+                              print('EMPILHADEIRA: ${forklift.prefixo}');
+                            }
+
+                            // FUNÇÃO SCANNER CHECKLIST
+                            if (doc.exists) {
+                              final forklift = ForkliftModel.fromMap(
+                                doc.data()!,
+                              );
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      ChecklistForklift(empilhadeira: forklift),
+                                ),
+                              );
+                            }
                           },
 
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (_) => ListForklift()),
-                          // );
-                          child: Stack(
-                            children: [
-                              Container(
-                                height: 110,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.primary,
-                                    width: 1,
-                                  ),
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.primary,
+                                width: 1,
                               ),
-                              Container(
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.primary,
-                                    width: 1,
+                              color: AppColors.primary2,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.gray4,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      'Scanner QR',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.secudaryBackground,
+                                      ),
+                                    ),
                                   ),
-                                  color: AppColors.primary2,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(3),
-                                  child: Image.asset(
-                                    'image/forklift.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 6),
-                        Text(
-                          'Frotas',
 
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryText,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2),
+                                      child: Image.asset(
+                                        'image/qrcode.png',
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],

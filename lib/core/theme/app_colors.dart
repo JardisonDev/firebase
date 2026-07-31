@@ -4,7 +4,7 @@ class AppColors {
   AppColors._(); // Impede a criação de instâncias AppColors()
 
   // --- BRAND COLORS (Identidade Visual) ---
-  static const Color primary = Color(0xFF5682A9);
+  static const Color primary = Color(0xFF006398);
   static const Color primary1 = Color(0xFFA9C6E4);
   static const Color primary2 = Color(0xFFE6F0F6);
   static const Color secudary = Color(0xFFFCC43B);
@@ -18,6 +18,7 @@ class AppColors {
   static const Color secudaryBackground = Color(0xFFffffff);
 
   // --- ESCALA DE CINZAS (Novas cores da imagem) ---
+  static const Color gray7 = Color(0xFFE6F0F6); // Cinza mais escuro da escala
   static const Color gray6 = Color(0xFF464656); // Cinza mais escuro da escala
   static const Color gray5 = Color(0xFF626273);
   static const Color gray4 = Color(0xFF9090A0);
@@ -29,9 +30,10 @@ class AppColors {
   // --- SEMANTIC COLORS (Status e Avisos) ---
 
   static const Color error = Color(0xFFFF5963); // Erro / Perigo
-  static const Color manutencao = Color(0xFFB59410); // Em Manutenção
+  static const Color manutencao = Color(0xFFfcca64); // Em Manutenção
   static const Color emOperacao = Color(0xFF007a8d); // Em Operação
   static const Color disponivel = Color(0xFF5d823a); // Em Operação
+  static const Color custon = Color(0xFFe6f0f6); // Em Operação
 }
 
 // void Text(

@@ -4,8 +4,9 @@ import 'package:inspector_ro/components/menuDrawer.dart';
 import 'package:inspector_ro/core/theme/app_colors.dart';
 import 'package:inspector_ro/models/forklift_model.dart';
 import 'package:inspector_ro/pages/checklist.dart';
+import 'package:inspector_ro/pages/manutencao.dart';
 import 'package:inspector_ro/pages/scanner_qr.dart';
-import 'package:inspector_ro/pages/teste.dart';
+import 'package:inspector_ro/pages/operacao.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class listMaquinas extends StatefulWidget {
@@ -32,7 +33,7 @@ class _listMaquinasState extends State<listMaquinas> {
   }
 
   Future<void> tocarSom() async {
-    await audioPlayer.play(AssetSource('quick-win.mp3'));
+    await audioPlayer.play(AssetSource('audio/quick-win.mp3'));
   }
 
   Stream<List<ForkliftModel>> streamForklifts() {
@@ -94,7 +95,7 @@ class _listMaquinasState extends State<listMaquinas> {
                     ),
                   ),
                   const Text(
-                    'Empilhadeira',
+                    'Empilhadeiras',
 
                     style: TextStyle(
                       color: AppColors.primary,
@@ -164,22 +165,22 @@ class _listMaquinasState extends State<listMaquinas> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(12),
                           onTap: () async {
+                            //ABRIR LEITOR QR FUTURAMENTE
+                            final resultado = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ScannerQrPage(),
+                              ),
+                            );
+
+                            if (resultado != null) {
+                              pesquisaController.text = resultado;
+
+                              setState(() {
+                                filtro = resultado;
+                              });
+                            }
                             await tocarSom();
-                            // ABRIR LEITOR QR FUTURAMENTE
-                            // final resultado = await Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (_) => ScannerQrPage(),
-                            //   ),
-                            // );
-
-                            // if (resultado != null) {
-                            //   pesquisaController.text = resultado;
-
-                            //   setState(() {
-                            //     filtro = resultado;
-                            //   });
-                            // }
                           },
                           child: const Center(
                             child: Icon(
@@ -264,66 +265,59 @@ class _listMaquinasState extends State<listMaquinas> {
                   itemBuilder: (context, index) {
                     final forklift = maquinasFiltradas[index];
 
-                    return Card(
-                      color: AppColors.primary2,
-
-                      //surfaceTintColor: AppColors.primary1,
-                      child: Column(
-                        children: [
-                          Container(
-                            width: double.infinity,
-
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF7FDFF),
-                              borderRadius: BorderRadius.circular(14),
-
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.04),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
+                    return GestureDetector(
+                      // NAVEGAÇÃO
+                      onTap: () async {
+                        if (forklift.estadoOperacional == 'Em Operação') {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  AvisoOperacao(prefixo: forklift.prefixo),
                             ),
+                          );
+                        } else if (forklift.estadoOperacional == 'Manutenção') {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  AvisoManutencao(prefixo: forklift.prefixo),
+                            ),
+                          );
+                        } else {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ChecklistForklift(empilhadeira: forklift),
+                            ),
+                          );
+                        }
+                      },
+                      child: Card(
+                        color: AppColors.secondaryText,
 
-                            child: Padding(
-                              padding: const EdgeInsets.all(12),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
 
-                              child: GestureDetector(
-                                onTap: () async {
-                                  if (forklift.estadoOperacional ==
-                                      'Em Operação') {
-                                    print('Em operção');
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => testeScrin(),
-                                      ),
-                                    );
-                                  } else {
-                                    await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ChecklistForklift(
-                                          empilhadeira: forklift,
-                                        ),
-                                      ),
-                                    );
-                                    // setState(() {
-                                    //   listForklift.clear();
-                                    //   isLoading = true;
-                                    // });
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
 
-                                    //await queryFarebase();
-                                  }
+                                boxShadow: [
+                                  BoxShadow(
+                                    // ignore: deprecated_member_use
+                                    color: Colors.black.withOpacity(0.04),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
 
-                                  // setState(() {
-                                  //   listForklift.clear();
-                                  //   isLoading = true;
-                                  // });
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
 
-                                  // await queryFarebase();
-                                },
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -360,38 +354,24 @@ class _listMaquinasState extends State<listMaquinas> {
                                               height: 8,
 
                                               decoration: BoxDecoration(
-                                                color: Color(0xFF007A8D),
+                                                color:
+                                                    forklift.estadoOperacional ==
+                                                        'Em Operação'
+                                                    ? AppColors.emOperacao
+                                                    : forklift.estadoOperacional ==
+                                                          'Manutenção'
+                                                    ? AppColors.manutencao
+                                                    : forklift.estadoOperacional ==
+                                                          'Disponível'
+                                                    ? AppColors.disponivel
+                                                    : Colors.grey,
                                                 shape: BoxShape.circle,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-
-                                        Row(
-                                          children: const [
-                                            Icon(
-                                              Icons.play_arrow_rounded,
-                                              size: 18,
-                                              color: Color(0xFF007A8D),
-                                            ),
-
-                                            SizedBox(width: 4),
-
-                                            Text(
-                                              'Em Uso',
-
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF007A8D),
                                               ),
                                             ),
                                           ],
                                         ),
                                       ],
                                     ),
-
-                                    const SizedBox(height: 14),
 
                                     // CONTEÚDO
                                     Row(
@@ -416,8 +396,10 @@ class _listMaquinasState extends State<listMaquinas> {
                                                     'Prefixo:',
 
                                                     style: TextStyle(
+                                                      fontFamily: 'Inter',
                                                       fontSize: 10,
-                                                      color: Colors.grey,
+                                                      color:
+                                                          AppColors.primaryText,
                                                     ),
                                                   ),
 
@@ -427,9 +409,12 @@ class _listMaquinasState extends State<listMaquinas> {
                                                     forklift.prefixo.toString(),
 
                                                     style: TextStyle(
-                                                      fontSize: 22,
+                                                      fontFamily: 'Lufga',
+                                                      fontSize: 25,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.normal,
+                                                      color:
+                                                          AppColors.primaryText,
                                                     ),
                                                   ),
                                                 ],
@@ -438,7 +423,7 @@ class _listMaquinasState extends State<listMaquinas> {
                                               Container(
                                                 width: 1,
                                                 height: 32,
-                                                color: Color(0xFFE5E7EB),
+                                                color: AppColors.gray3,
                                               ),
 
                                               // FROTA
@@ -451,8 +436,10 @@ class _listMaquinasState extends State<listMaquinas> {
                                                     'Frota:',
 
                                                     style: TextStyle(
+                                                      fontFamily: 'Inter',
                                                       fontSize: 10,
-                                                      color: Colors.grey,
+                                                      color:
+                                                          AppColors.primaryText,
                                                     ),
                                                   ),
 
@@ -462,7 +449,7 @@ class _listMaquinasState extends State<listMaquinas> {
                                                     forklift.frota.toString(),
 
                                                     style: TextStyle(
-                                                      fontSize: 13,
+                                                      fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                     ),
@@ -486,20 +473,32 @@ class _listMaquinasState extends State<listMaquinas> {
                                                     'Horímetro',
 
                                                     style: TextStyle(
+                                                      fontFamily: 'Inter',
                                                       fontSize: 10,
-                                                      color: Colors.grey,
+                                                      color:
+                                                          AppColors.primaryText,
                                                     ),
                                                   ),
 
                                                   SizedBox(height: 2),
-                                                  Text(
-                                                    forklift.km.toString(),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        forklift.km.toString(),
 
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 2),
+                                                      Icon(
+                                                        Icons.speed_rounded,
+                                                        size: 15,
+                                                        color: AppColors.gray5,
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
@@ -535,14 +534,13 @@ class _listMaquinasState extends State<listMaquinas> {
                                       ],
                                     ),
 
-                                    const SizedBox(height: 14),
-
+                                    //const SizedBox(height: 14),
                                     Divider(
                                       height: 1,
                                       color: Colors.grey.shade300,
                                     ),
 
-                                    const SizedBox(height: 12),
+                                    const SizedBox(height: 6),
 
                                     // OPERADOR
                                     Row(
@@ -599,8 +597,8 @@ class _listMaquinasState extends State<listMaquinas> {
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -615,19 +613,21 @@ class _listMaquinasState extends State<listMaquinas> {
 
   // WIDGET LOADING
   Widget buildLoading() {
-    return Expanded(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
 
-          children: [
-            Image.asset('image/forklift.png', width: 140),
+        children: [
+          Image.asset('image/forklift.png', width: 140),
 
-            const SizedBox(height: 20),
+          const SizedBox(height: 20),
 
-            RichText(
-              text: TextSpan(
-                text: 'Otrack',
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Chack',
                 style: const TextStyle(
                   fontSize: 45,
                   fontWeight: FontWeight.bold,
@@ -635,39 +635,48 @@ class _listMaquinasState extends State<listMaquinas> {
                   fontFamily: 'Lufga',
                 ),
               ),
-            ),
-
-            const SizedBox(height: 10),
-
-            const Text(
-              'Preparando sistema...',
-              style: TextStyle(color: Colors.grey),
-            ),
-
-            const SizedBox(height: 30),
-
-            SizedBox(
-              width: 220,
-
-              child: LinearProgressIndicator(
-                color: AppColors.primary,
-                value: progress,
-                minHeight: 8,
-                borderRadius: BorderRadius.circular(20),
+              Text(
+                'Point',
+                style: TextStyle(
+                  fontSize: 45,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
+                  fontFamily: 'Lufga',
+                ),
               ),
-            ),
+            ],
+          ),
 
-            const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
-            Text(
-              '${(progress * 100).toInt()}%',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
-              ),
+          const Text(
+            'Preparando sistema...',
+            style: TextStyle(color: Colors.grey),
+          ),
+
+          const SizedBox(height: 30),
+
+          SizedBox(
+            width: 220,
+
+            child: LinearProgressIndicator(
+              color: AppColors.primary,
+              value: progress,
+              minHeight: 8,
+              borderRadius: BorderRadius.circular(20),
             ),
-          ],
-        ),
+          ),
+
+          const SizedBox(height: 12),
+
+          Text(
+            '${(progress * 100).toInt()}%',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryText,
+            ),
+          ),
+        ],
       ),
     );
   }
